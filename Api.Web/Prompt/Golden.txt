@@ -1,0 +1,6 @@
+﻿我有一个新的实体叫StockDetail.cs（已创建），请你依照News的代码模板，为StockDetail生成一套CRUD的class, News的代码模板如下 ：
+1.	Api.Contract工程下有以下文件：NewsCommand.cs，NewsQuery.cs，INewsService.cs，NewsDTO.cs，NewsEvent.cs。
+2.	Api.DAL工程下有以下文件：NewsSpecification.cs，NewsRepositoryExtension.cs 。
+3.	Api.BLL工程下有以下文件：NewsCommandHandler.cs，NewsCommandValidator.cs，NewsQueryHandler.cs，NewsEventHandler.cs，NewsService.cs 。
+4.	Api.Web工程下有以下文件：NewsController.cs 。 
+一共是13个文件，请你严格按照上面的文件顺序生成相对应的新的一组文件，不需要创建名称为src的上级文件夹，直接生成到各个原有的各个文件夹中即可，最后你要build and pass

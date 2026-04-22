@@ -1,0 +1,31 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/.vs
+/Api.Web/.vs/Api.Web
+/Api.Web/bin/Debug/net8.0
+/Api.Web/obj
+/.vs/StockAgent888.Web/v17
+/Api.Contract/bin/Debug/net8.0
+/Api.Contract/obj
+/Api.DAL/bin/Debug/net8.0
+/Api.DAL/obj
+/.vs
+/Api.Web/.vs/ProjectEvaluation
+/Api.Contract/bin/Debug/net8.0
+/Api.Contract/obj/Debug/net8.0
+/Api.DAL/bin/Debug/net8.0
+/Api.DAL/obj/Debug/net8.0
+/Api.Contract/obj
+/Api.DAL/obj
+/Api.Common/.vs/Api.Common
+/Api.Common/bin/Debug/net6.0
+/Api.Common/obj
+/Api.BLL/bin/Debug/net8.0
+/Api.BLL/obj
+
+# 通用忽略规则
+[Bb]in/
+[Oo]bj/
+

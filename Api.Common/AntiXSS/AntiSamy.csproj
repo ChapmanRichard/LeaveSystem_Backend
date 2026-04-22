@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net6.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Caner Patır</Authors>
+    <Version>1.0.5</Version>
+    <FileVersion>1.0.5.0</FileVersion>
+    <RepositoryUrl>https://github.com/canerpatir/AntiSamy.NET</RepositoryUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/canerpatir/AntiSamy.NET/master/icon.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/canerpatir/AntiSamy.NET</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/canerpatir/AntiSamy.NET/blob/master/LICENCE</PackageLicenseUrl>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <RepositoryType>git</RepositoryType>
+    <Description>A .net standard library for performing configurable cleansing of HTML coming from untrusted sources.</Description>
+    <Copyright>Caner Patır</Copyright>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.9.9.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.8.1" />
+  </ItemGroup>
+
+</Project>
