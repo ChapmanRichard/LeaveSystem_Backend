@@ -56,7 +56,6 @@ namespace Api.Common
         QuickLinks1,
         Dashboard,
         SCCUDashboard,
-        News,
         Notes,
         ExportCSVTool,
         SubmissionRegister,

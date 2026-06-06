@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Api.Contract.Model;
 using Microsoft.Extensions.Configuration;
 
@@ -88,8 +83,6 @@ namespace Api.DAL
             });
         }
 
-        public DbSet<StockBase> StockBase { get; set; }
-        public DbSet<News> News { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<LeaveQuota> LeaveQuotas { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
