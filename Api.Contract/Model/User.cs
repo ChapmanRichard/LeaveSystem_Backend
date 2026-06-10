@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,10 +16,4 @@ public class User
     [Required]
     [StringLength(20)]
     public required string Role { get; set; }
-
-    public ICollection<LeaveQuota> LeaveQuotas { get; set; } = new List<LeaveQuota>();
-
-    public ICollection<LeaveRequest> SubmittedLeaveRequests { get; set; } = new List<LeaveRequest>();
-
-    public ICollection<LeaveRequest> ApprovedLeaveRequests { get; set; } = new List<LeaveRequest>();
 }

@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Api.Contract.Model;
 using Microsoft.Extensions.Configuration;
+using Api.Contract.Model;
 
 namespace Api.DAL
 {
     public class LeaveSystemDBContext : DbContext
     {
         private readonly IConfiguration? _configuration;
+
+        public DbSet<User> Users => Set<User>();
 
         public LeaveSystemDBContext()
         {
@@ -44,47 +46,28 @@ namespace Api.DAL
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(x => x.Username).HasMaxLength(50).IsRequired();
-                entity.Property(x => x.Role).HasMaxLength(20).IsRequired();
-            });
+                entity.ToTable("Users");
 
-            modelBuilder.Entity<LeaveQuota>(entity =>
-            {
-                entity.Property(x => x.LeaveType).HasMaxLength(20).IsRequired();
-                entity.Property(x => x.TotalDays).HasPrecision(5, 1);
-                entity.Property(x => x.RemainingDays).HasPrecision(5, 1);
-                //entity.Property(x => x.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.HasKey(e => e.Id);
 
-                entity.HasOne(x => x.User)
-                    .WithMany(x => x.LeaveQuotas)
-                    .HasForeignKey(x => x.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
+                entity.Property(e => e.Id)
+                    .ValueGeneratedOnAdd();
 
-            modelBuilder.Entity<LeaveRequest>(entity =>
-            {
-                entity.Property(x => x.LeaveType).HasMaxLength(20).IsRequired();
-                entity.Property(x => x.Reason).HasMaxLength(500).IsRequired();
-                entity.Property(x => x.Status).HasMaxLength(20).IsRequired();
-                entity.Property(x => x.ApprovalComment).HasMaxLength(500);
-                entity.Property(x => x.Duration).HasPrecision(5, 1);
-                //entity.Property(x => x.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                //entity.Property(x => x.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.Property(e => e.Username)
+                    .HasMaxLength(50)
+                    .IsRequired();
 
-                entity.HasOne(x => x.Applicant)
-                    .WithMany(x => x.SubmittedLeaveRequests)
-                    .HasForeignKey(x => x.ApplicantId)
-                    .OnDelete(DeleteBehavior.Restrict);
+                entity.Property(e => e.Role)
+                    .HasMaxLength(20)
+                    .IsRequired();
 
-                entity.HasOne(x => x.Approver)
-                    .WithMany(x => x.ApprovedLeaveRequests)
-                    .HasForeignKey(x => x.ApproverId)
-                    .OnDelete(DeleteBehavior.Restrict);
+                entity.HasData(
+                    new User { Id = 1, Username = "Employee1", Role = "Employee" },
+                    new User { Id = 2, Username = "Employee2", Role = "Employee" },
+                    new User { Id = 3, Username = "Employee3", Role = "Employee" },
+                    new User { Id = 4, Username = "Manager1", Role = "Manager" },
+                    new User { Id = 5, Username = "Admin1", Role = "Admin" });
             });
         }
-
-        public DbSet<User> Users { get; set; }
-        public DbSet<LeaveQuota> LeaveQuotas { get; set; }
-        public DbSet<LeaveRequest> LeaveRequests { get; set; }
     }
 }
