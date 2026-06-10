@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="CommandHandlers\" />
     <Folder Include="CommandDecorators\" />
     <Folder Include="Mapper\" />
+    <Folder Include="QueryHandlers\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
