@@ -1,0 +1,533 @@
+2025-12-08 14:17:53.687 +08:00 [INF] User profile is available. Using 'C:\Users\Golden\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-08 14:17:53.979 +08:00 [INF] Now listening on: https://localhost:5194
+2025-12-08 14:17:53.987 +08:00 [INF] Now listening on: http://localhost:5195
+2025-12-08 14:17:54.039 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-08 14:17:54.039 +08:00 [INF] Hosting environment: Development
+2025-12-08 14:17:54.039 +08:00 [INF] Content root path: D:\Personal\Stock\SourceCode\StockAgent888\src\Api.Web
+2025-12-08 14:17:55.025 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/ - null null
+2025-12-08 14:17:55.215 +08:00 [INF] HTTP GET / responded 404 in 53.8690 ms
+2025-12-08 14:17:55.220 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/ - 404 0 null 196.1575ms
+2025-12-08 14:17:55.222 +08:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:5194/, Response status code: 404
+2025-12-08 14:25:29.442 +08:00 [INF] User profile is available. Using 'C:\Users\Golden\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-08 14:25:29.871 +08:00 [INF] Now listening on: https://localhost:5194
+2025-12-08 14:25:29.871 +08:00 [INF] Now listening on: http://localhost:5195
+2025-12-08 14:25:29.964 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-08 14:25:29.964 +08:00 [INF] Hosting environment: Development
+2025-12-08 14:25:29.964 +08:00 [INF] Content root path: D:\Personal\Stock\SourceCode\StockAgent888\src\Api.Web
+2025-12-08 14:25:30.815 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/ - null null
+2025-12-08 14:25:31.069 +08:00 [INF] HTTP GET / responded 404 in 78.8864 ms
+2025-12-08 14:25:31.074 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/ - 404 0 null 259.5527ms
+2025-12-08 14:25:31.078 +08:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:5194/, Response status code: 404
+2025-12-08 14:25:41.708 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/swagger - null null
+2025-12-08 14:25:41.722 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/swagger - 301 0 null 14.0075ms
+2025-12-08 14:25:41.728 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/swagger/index.html - null null
+2025-12-08 14:25:41.799 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/swagger/swagger-ui.css - null null
+2025-12-08 14:25:41.799 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/swagger/swagger-ui-bundle.js - null null
+2025-12-08 14:25:41.800 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/swagger/swagger-ui-standalone-preset.js - null null
+2025-12-08 14:25:41.800 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/swagger/index.html - 200 null text/html;charset=utf-8 72.9539ms
+2025-12-08 14:25:41.819 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-08 14:25:41.833 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/_vs/browserLink - null null
+2025-12-08 14:25:41.874 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/_framework/aspnetcore-browser-refresh.js - 200 16498 application/javascript; charset=utf-8 56.6684ms
+2025-12-08 14:25:41.890 +08:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2025-12-08 14:25:41.890 +08:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2025-12-08 14:25:41.892 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/swagger/swagger-ui-standalone-preset.js - 200 312163 text/javascript 91.2776ms
+2025-12-08 14:25:41.892 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/swagger/swagger-ui.css - 200 144929 text/css 92.5762ms
+2025-12-08 14:25:41.926 +08:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2025-12-08 14:25:41.927 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/swagger/swagger-ui-bundle.js - 200 1061536 text/javascript 127.7567ms
+2025-12-08 14:25:41.970 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/_vs/browserLink - 200 null text/javascript; charset=UTF-8 138.5773ms
+2025-12-08 14:25:42.099 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/swagger/v1/swagger.json - null null
+2025-12-08 14:25:42.106 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 7.6436ms
+2025-12-08 14:25:42.170 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/swagger/favicon-32x32.png - null null
+2025-12-08 14:25:42.171 +08:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2025-12-08 14:25:42.171 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/swagger/favicon-32x32.png - 200 628 image/png 1.6079ms
+2025-12-08 15:45:29.376 +08:00 [INF] User profile is available. Using 'C:\Users\Golden\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-08 15:45:29.655 +08:00 [INF] Now listening on: https://localhost:5194
+2025-12-08 15:45:29.655 +08:00 [INF] Now listening on: http://localhost:5195
+2025-12-08 15:45:29.701 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-08 15:45:29.701 +08:00 [INF] Hosting environment: Development
+2025-12-08 15:45:29.701 +08:00 [INF] Content root path: D:\Personal\Stock\SourceCode\StockAgent888\src\Api.Web
+2025-12-08 15:45:30.579 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/ - null null
+2025-12-08 15:45:31.168 +08:00 [INF] HTTP GET / responded 404 in 62.7743 ms
+2025-12-08 15:45:31.172 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/ - 404 0 null 593.1093ms
+2025-12-08 15:45:31.173 +08:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:5194/, Response status code: 404
+2025-12-08 15:45:36.294 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/swagger/index.html - null null
+2025-12-08 15:45:36.379 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/swagger/index.html - 200 null text/html;charset=utf-8 85.1267ms
+2025-12-08 15:45:36.398 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-08 15:45:36.398 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/_vs/browserLink - null null
+2025-12-08 15:45:36.407 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/_framework/aspnetcore-browser-refresh.js - 200 16498 application/javascript; charset=utf-8 8.887ms
+2025-12-08 15:45:36.455 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/_vs/browserLink - 200 null text/javascript; charset=UTF-8 56.6373ms
+2025-12-08 15:45:36.516 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/swagger/v1/swagger.json - null null
+2025-12-08 15:45:36.521 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 4.732ms
+2025-12-08 15:51:39.413 +08:00 [WRN] No store type was specified for the decimal property 'amountchg' on entity type 'HoldingSummaryHistory'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-12-08 15:51:39.434 +08:00 [WRN] No store type was specified for the decimal property 'expectsaleprice' on entity type 'TransactionRecord'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-12-08 15:51:40.335 +08:00 [WRN] No store type was specified for the decimal property 'amountchg' on entity type 'HoldingSummaryHistory'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-12-08 15:51:40.335 +08:00 [WRN] No store type was specified for the decimal property 'expectsaleprice' on entity type 'TransactionRecord'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-12-08 15:51:40.742 +08:00 [INF] Executed DbCommand (355ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [StockAgent];
+2025-12-08 15:51:40.861 +08:00 [INF] Executed DbCommand (117ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [StockAgent] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2025-12-08 15:51:40.878 +08:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-08 15:51:40.973 +08:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Block] (
+    [code] nvarchar(450) NOT NULL,
+    [market] nvarchar(max) NOT NULL,
+    [name] nvarchar(max) NOT NULL,
+    [blocktype] nvarchar(max) NOT NULL,
+    [isfavorite] bit NOT NULL,
+    CONSTRAINT [PK_Block] PRIMARY KEY ([code])
+);
+2025-12-08 15:51:40.975 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [BlockWave] (
+    [Id] int NOT NULL IDENTITY,
+    [blockcode] nvarchar(max) NOT NULL,
+    [seq] int NOT NULL,
+    [startdate] int NOT NULL,
+    [enddate] int NOT NULL,
+    [startprice] decimal(18,4) NOT NULL,
+    [endprice] decimal(18,4) NOT NULL,
+    [totalDays] int NOT NULL,
+    [incPct] decimal(18,4) NOT NULL,
+    [upordown] int NOT NULL,
+    CONSTRAINT [PK_BlockWave] PRIMARY KEY ([Id])
+);
+2025-12-08 15:51:40.977 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [HoldingSummary] (
+    [Id] int NOT NULL IDENTITY,
+    [UserName] nvarchar(max) NOT NULL,
+    [TotalAmount] decimal(12,4) NOT NULL,
+    [HoldingPct] decimal(8,4) NOT NULL,
+    [OrigMarketValue] decimal(12,4) NOT NULL,
+    [MarketValue] decimal(12,4) NOT NULL,
+    [Pct_chg] decimal(8,4) NOT NULL,
+    [winamount] decimal(12,4) NOT NULL,
+    CONSTRAINT [PK_HoldingSummary] PRIMARY KEY ([Id])
+);
+2025-12-08 15:51:40.979 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [HoldingSummaryHistory] (
+    [Id] int NOT NULL IDENTITY,
+    [tradedate] int NOT NULL,
+    [UserName] nvarchar(max) NOT NULL,
+    [TotalAmount] decimal(12,4) NOT NULL,
+    [HoldingPct] decimal(8,4) NOT NULL,
+    [OrigMarketValue] decimal(12,4) NOT NULL,
+    [MarketValue] decimal(12,4) NOT NULL,
+    [Pct_chg] decimal(8,4) NOT NULL,
+    [winamount] decimal(12,4) NOT NULL,
+    [amountchg] decimal(18,2) NOT NULL,
+    CONSTRAINT [PK_HoldingSummaryHistory] PRIMARY KEY ([Id])
+);
+2025-12-08 15:51:40.981 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Holiday] (
+    [Id] int NOT NULL IDENTITY,
+    [holidaydate] int NOT NULL,
+    CONSTRAINT [PK_Holiday] PRIMARY KEY ([Id])
+);
+2025-12-08 15:51:40.983 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [IndexKData] (
+    [Id] int NOT NULL IDENTITY,
+    [indexcode] nvarchar(max) NOT NULL,
+    [tradedate] int NOT NULL,
+    [open] decimal(18,4) NOT NULL,
+    [close] decimal(18,4) NOT NULL,
+    [volume] decimal(18,4) NOT NULL,
+    [high] decimal(18,4) NOT NULL,
+    [low] decimal(18,4) NOT NULL,
+    [amount] decimal(18,4) NOT NULL,
+    [range] decimal(18,4) NOT NULL,
+    [ratio] decimal(18,4) NOT NULL,
+    [turnoverratio] decimal(18,4) NOT NULL,
+    [preClose] decimal(18,4) NOT NULL,
+    [ma5avgprice] decimal(18,4) NOT NULL,
+    [ma5volume] decimal(18,4) NOT NULL,
+    [ma10avgprice] decimal(18,4) NOT NULL,
+    [ma10volume] decimal(18,4) NOT NULL,
+    [ma20avgprice] decimal(18,4) NOT NULL,
+    [ma20volume] decimal(18,4) NOT NULL,
+    CONSTRAINT [PK_IndexKData] PRIMARY KEY ([Id])
+);
+2025-12-08 15:51:40.986 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [IndexWave] (
+    [Id] int NOT NULL IDENTITY,
+    [indexcode] nvarchar(max) NOT NULL,
+    [seq] int NOT NULL,
+    [startdate] int NOT NULL,
+    [enddate] int NOT NULL,
+    [startprice] decimal(18,4) NOT NULL,
+    [endprice] decimal(18,4) NOT NULL,
+    [totalDays] int NOT NULL,
+    [incPct] decimal(18,4) NOT NULL,
+    [upordown] int NOT NULL,
+    CONSTRAINT [PK_IndexWave] PRIMARY KEY ([Id])
+);
+2025-12-08 15:51:40.988 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [StockBase] (
+    [code] nvarchar(450) NOT NULL,
+    [name] nvarchar(max) NOT NULL,
+    [isfavorite] bit NOT NULL,
+    [isexclude] bit NOT NULL,
+    CONSTRAINT [PK_StockBase] PRIMARY KEY ([code])
+);
+2025-12-08 15:51:40.990 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Users] (
+    [Id] int NOT NULL IDENTITY,
+    [Username] nvarchar(max) NULL,
+    [PasswordHash] nvarchar(max) NULL,
+    CONSTRAINT [PK_Users] PRIMARY KEY ([Id])
+);
+2025-12-08 15:51:40.996 +08:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [BlockKData] (
+    [Id] int NOT NULL IDENTITY,
+    [blockcode] nvarchar(450) NOT NULL,
+    [tradedate] int NOT NULL,
+    [open] decimal(18,4) NOT NULL,
+    [close] decimal(18,4) NOT NULL,
+    [volume] decimal(18,4) NOT NULL,
+    [high] decimal(18,4) NOT NULL,
+    [low] decimal(18,4) NOT NULL,
+    [amount] decimal(18,4) NOT NULL,
+    [range] decimal(18,4) NOT NULL,
+    [ratio] decimal(18,4) NOT NULL,
+    [actual_ratio] decimal(18,4) NOT NULL,
+    [turnoverratio] decimal(18,4) NOT NULL,
+    [preClose] decimal(18,4) NOT NULL,
+    [ma5avgprice] decimal(18,4) NOT NULL,
+    [ma5volume] decimal(18,4) NOT NULL,
+    [ma5amount] decimal(18,4) NOT NULL,
+    [ma10avgprice] decimal(18,4) NOT NULL,
+    [ma10volume] decimal(18,4) NOT NULL,
+    [ma10amount] decimal(18,4) NOT NULL,
+    [ma20avgprice] decimal(18,4) NOT NULL,
+    [ma20volume] decimal(18,4) NOT NULL,
+    [ma20amount] decimal(18,4) NOT NULL,
+    [ma30avgprice] decimal(18,4) NOT NULL,
+    [ma30volume] decimal(18,4) NOT NULL,
+    [ma30amount] decimal(18,4) NOT NULL,
+    [ma40avgprice] decimal(18,4) NOT NULL,
+    [ma40volume] decimal(18,4) NOT NULL,
+    [ma40amount] decimal(18,4) NOT NULL,
+    [ma60avgprice] decimal(18,4) NOT NULL,
+    [ma60volume] decimal(18,4) NOT NULL,
+    [ma60amount] decimal(18,4) NOT NULL,
+    [ma90avgprice] decimal(18,4) NOT NULL,
+    [ma90volume] decimal(18,4) NOT NULL,
+    [ma90amount] decimal(18,4) NOT NULL,
+    [ma120avgprice] decimal(18,4) NOT NULL,
+    [ma120volume] decimal(18,4) NOT NULL,
+    [ma120amount] decimal(18,4) NOT NULL,
+    [compare_date_1] int NOT NULL,
+    [inc_pct_1] decimal(18,4) NOT NULL,
+    [compare_date_2] int NOT NULL,
+    [inc_pct_2] decimal(18,4) NOT NULL,
+    [compare_date_3] int NOT NULL,
+    [inc_pct_3] decimal(18,4) NOT NULL,
+    [compare_date_4] int NOT NULL,
+    [inc_pct_4] decimal(18,4) NOT NULL,
+    [compare_date_5] int NOT NULL,
+    [inc_pct_5] decimal(18,4) NOT NULL,
+    [compare_date_6] int NOT NULL,
+    [inc_pct_6] decimal(18,4) NOT NULL,
+    [volratio] decimal(8,4) NOT NULL,
+    [amountratio] decimal(8,4) NOT NULL,
+    [ma5toma10amountratio] decimal(8,4) NOT NULL,
+    CONSTRAINT [PK_BlockKData] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_BlockKData_Block_blockcode] FOREIGN KEY ([blockcode]) REFERENCES [Block] ([code]) ON DELETE CASCADE
+);
+2025-12-08 15:51:40.998 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [BlockStock] (
+    [Id] int NOT NULL IDENTITY,
+    [blockcode] nvarchar(450) NOT NULL,
+    [stockcode] nvarchar(450) NULL,
+    CONSTRAINT [PK_BlockStock] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_BlockStock_Block_blockcode] FOREIGN KEY ([blockcode]) REFERENCES [Block] ([code]) ON DELETE CASCADE,
+    CONSTRAINT [FK_BlockStock_StockBase_stockcode] FOREIGN KEY ([stockcode]) REFERENCES [StockBase] ([code])
+);
+2025-12-08 15:51:41.000 +08:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [HoldingDetail] (
+    [Id] int NOT NULL IDENTITY,
+    [UserName] nvarchar(max) NOT NULL,
+    [stockcode] nvarchar(450) NOT NULL,
+    [costprice] decimal(8,4) NOT NULL,
+    [currentprice] decimal(8,4) NOT NULL,
+    [quantity] int NOT NULL,
+    [OrigMarketValue] decimal(12,4) NOT NULL,
+    [MarketValue] decimal(12,4) NOT NULL,
+    [Pct_chg] decimal(8,4) NOT NULL,
+    [winamount] decimal(12,4) NOT NULL,
+    CONSTRAINT [PK_HoldingDetail] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_HoldingDetail_StockBase_stockcode] FOREIGN KEY ([stockcode]) REFERENCES [StockBase] ([code]) ON DELETE CASCADE
+);
+2025-12-08 15:51:41.003 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [StockDetail] (
+    [Id] int NOT NULL IDENTITY,
+    [stockcode] nvarchar(450) NOT NULL,
+    [totalShareCapital] decimal(18,4) NOT NULL,
+    [circulatingCapital] decimal(18,4) NOT NULL,
+    [releaseDate] decimal(18,4) NOT NULL,
+    [issuePrice] decimal(18,4) NOT NULL,
+    [companyCode] nvarchar(max) NULL,
+    [innerCode] nvarchar(max) NULL,
+    CONSTRAINT [PK_StockDetail] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_StockDetail_StockBase_stockcode] FOREIGN KEY ([stockcode]) REFERENCES [StockBase] ([code]) ON DELETE CASCADE
+);
+2025-12-08 15:51:41.007 +08:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [StockKData] (
+    [Id] int NOT NULL IDENTITY,
+    [ts_code] nvarchar(100) NOT NULL,
+    [stockcode] nvarchar(450) NOT NULL,
+    [trade_date] int NOT NULL,
+    [open] decimal(18,4) NOT NULL,
+    [high] decimal(18,4) NOT NULL,
+    [low] decimal(18,4) NOT NULL,
+    [close] decimal(18,4) NOT NULL,
+    [pre_close] decimal(18,4) NOT NULL,
+    [change] decimal(18,4) NOT NULL,
+    [pct_chg] decimal(18,4) NOT NULL,
+    [actual_pct_chg] decimal(18,4) NOT NULL,
+    [vol] decimal(18,4) NOT NULL,
+    [amount] decimal(18,4) NOT NULL,
+    [turnover] decimal(18,4) NOT NULL,
+    [inc_pct_amount] decimal(18,4) NOT NULL,
+    [inc_pct_vol] decimal(18,4) NOT NULL,
+    [compare_date_1] int NOT NULL,
+    [inc_pct_1] decimal(18,4) NOT NULL,
+    [compare_date_2] int NOT NULL,
+    [inc_pct_2] decimal(18,4) NOT NULL,
+    [compare_date_3] int NOT NULL,
+    [inc_pct_3] decimal(18,4) NOT NULL,
+    [compare_date_4] int NOT NULL,
+    [inc_pct_4] decimal(18,4) NOT NULL,
+    [compare_date_5] int NOT NULL,
+    [inc_pct_5] decimal(18,4) NOT NULL,
+    [compare_date_6] int NOT NULL,
+    [inc_pct_6] decimal(18,4) NOT NULL,
+    [is_upbreak] bit NOT NULL,
+    [band] int NULL,
+    [avg_band_amount] decimal(18,4) NULL,
+    [is_band_lowest] decimal(18,4) NULL,
+    [pct_avg_band_amount] decimal(18,4) NULL,
+    [pct_upbreak_band_amount] decimal(18,4) NULL,
+    [is_dimi_buypoint] bit NOT NULL,
+    [ma5avgprice] decimal(18,4) NOT NULL,
+    [ma5volume] decimal(18,4) NOT NULL,
+    [ma5amount] decimal(18,4) NOT NULL,
+    [ma10avgprice] decimal(18,4) NOT NULL,
+    [ma10volume] decimal(18,4) NOT NULL,
+    [ma10amount] decimal(18,4) NOT NULL,
+    [ma20avgprice] decimal(18,4) NOT NULL,
+    [ma20volume] decimal(18,4) NOT NULL,
+    [ma20amount] decimal(18,4) NOT NULL,
+    [ma30avgprice] decimal(18,4) NOT NULL,
+    [ma30volume] decimal(18,4) NOT NULL,
+    [ma30amount] decimal(18,4) NOT NULL,
+    [ma40avgprice] decimal(18,4) NOT NULL,
+    [ma40volume] decimal(18,4) NOT NULL,
+    [ma40amount] decimal(18,4) NOT NULL,
+    [ma60avgprice] decimal(18,4) NOT NULL,
+    [ma60volume] decimal(18,4) NOT NULL,
+    [ma60amount] decimal(18,4) NOT NULL,
+    [ma90avgprice] decimal(18,4) NOT NULL,
+    [ma90volume] decimal(18,4) NOT NULL,
+    [ma90amount] decimal(18,4) NOT NULL,
+    [ma120avgprice] decimal(18,4) NOT NULL,
+    [ma120volume] decimal(18,4) NOT NULL,
+    [ma120amount] decimal(18,4) NOT NULL,
+    [marketvalue] decimal(18,4) NOT NULL,
+    [liquidmarketvalue] decimal(18,4) NOT NULL,
+    [staticPE] decimal(18,4) NOT NULL,
+    [dynamicPE] decimal(18,4) NOT NULL,
+    CONSTRAINT [PK_StockKData] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_StockKData_StockBase_stockcode] FOREIGN KEY ([stockcode]) REFERENCES [StockBase] ([code]) ON DELETE CASCADE
+);
+2025-12-08 15:51:41.010 +08:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [StockKDataWeek] (
+    [Id] int NOT NULL IDENTITY,
+    [stockcode] nvarchar(450) NOT NULL,
+    [tradedate] int NOT NULL,
+    [open] decimal(18,4) NOT NULL,
+    [high] decimal(18,4) NOT NULL,
+    [low] decimal(18,4) NOT NULL,
+    [close] decimal(18,4) NOT NULL,
+    [pre_close] decimal(18,4) NOT NULL,
+    [change] decimal(18,4) NOT NULL,
+    [pct_chg] decimal(18,4) NOT NULL,
+    [actual_pct_chg] decimal(18,4) NOT NULL,
+    [vol] decimal(18,4) NOT NULL,
+    [amount] decimal(18,4) NOT NULL,
+    [turnover] decimal(18,4) NOT NULL,
+    [inc_pct_amount] decimal(18,4) NOT NULL,
+    [inc_pct_vol] decimal(18,4) NOT NULL,
+    [compare_date_1] int NOT NULL,
+    [inc_pct_1] decimal(18,4) NOT NULL,
+    [compare_date_2] int NOT NULL,
+    [inc_pct_2] decimal(18,4) NOT NULL,
+    [compare_date_3] int NOT NULL,
+    [inc_pct_3] decimal(18,4) NOT NULL,
+    [compare_date_4] int NOT NULL,
+    [inc_pct_4] decimal(18,4) NOT NULL,
+    [compare_date_5] int NOT NULL,
+    [inc_pct_5] decimal(18,4) NOT NULL,
+    [compare_date_6] int NOT NULL,
+    [inc_pct_6] decimal(18,4) NOT NULL,
+    [is_upbreak] bit NOT NULL,
+    [band] int NULL,
+    [avg_band_amount] decimal(18,4) NULL,
+    [is_band_lowest] decimal(18,4) NULL,
+    [pct_avg_band_amount] decimal(18,4) NULL,
+    [pct_upbreak_band_amount] decimal(18,4) NULL,
+    [is_dimi_buypoint] bit NOT NULL,
+    [ma5avgprice] decimal(18,4) NOT NULL,
+    [ma5volume] decimal(18,4) NOT NULL,
+    [ma5amount] decimal(18,4) NOT NULL,
+    [ma10avgprice] decimal(18,4) NOT NULL,
+    [ma10volume] decimal(18,4) NOT NULL,
+    [ma10amount] decimal(18,4) NOT NULL,
+    [ma20avgprice] decimal(18,4) NOT NULL,
+    [ma20volume] decimal(18,4) NOT NULL,
+    [ma20amount] decimal(18,4) NOT NULL,
+    [ma30avgprice] decimal(18,4) NOT NULL,
+    [ma30volume] decimal(18,4) NOT NULL,
+    [ma30amount] decimal(18,4) NOT NULL,
+    [ma40avgprice] decimal(18,4) NOT NULL,
+    [ma40volume] decimal(18,4) NOT NULL,
+    [ma40amount] decimal(18,4) NOT NULL,
+    [ma60avgprice] decimal(18,4) NOT NULL,
+    [ma60volume] decimal(18,4) NOT NULL,
+    [ma60amount] decimal(18,4) NOT NULL,
+    [ma90avgprice] decimal(18,4) NOT NULL,
+    [ma90volume] decimal(18,4) NOT NULL,
+    [ma90amount] decimal(18,4) NOT NULL,
+    [ma120avgprice] decimal(18,4) NOT NULL,
+    [ma120volume] decimal(18,4) NOT NULL,
+    [ma120amount] decimal(18,4) NOT NULL,
+    [marketvalue] decimal(18,4) NOT NULL,
+    [liquidmarketvalue] decimal(18,4) NOT NULL,
+    [staticPE] decimal(18,4) NOT NULL,
+    [dynamicPE] decimal(18,4) NOT NULL,
+    CONSTRAINT [PK_StockKDataWeek] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_StockKDataWeek_StockBase_stockcode] FOREIGN KEY ([stockcode]) REFERENCES [StockBase] ([code]) ON DELETE CASCADE
+);
+2025-12-08 15:51:41.012 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [StockReminder] (
+    [Id] int NOT NULL IDENTITY,
+    [username] nvarchar(max) NOT NULL,
+    [stockcode] nvarchar(450) NOT NULL,
+    [reminderchecktype] nvarchar(max) NOT NULL,
+    [price] decimal(18,4) NULL,
+    [priceupordown] int NULL,
+    [expectdays] int NULL,
+    CONSTRAINT [PK_StockReminder] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_StockReminder_StockBase_stockcode] FOREIGN KEY ([stockcode]) REFERENCES [StockBase] ([code]) ON DELETE CASCADE
+);
+2025-12-08 15:51:41.014 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [StockWave] (
+    [Id] int NOT NULL IDENTITY,
+    [stockcode] nvarchar(450) NOT NULL,
+    [seq] int NOT NULL,
+    [startdate] int NOT NULL,
+    [enddate] int NOT NULL,
+    [startprice] decimal(18,4) NOT NULL,
+    [endprice] decimal(18,4) NOT NULL,
+    [totalDays] int NOT NULL,
+    [incPct] decimal(18,4) NOT NULL,
+    [upordown] int NOT NULL,
+    CONSTRAINT [PK_StockWave] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_StockWave_StockBase_stockcode] FOREIGN KEY ([stockcode]) REFERENCES [StockBase] ([code]) ON DELETE CASCADE
+);
+2025-12-08 15:51:41.016 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [TransactionRecord] (
+    [Id] int NOT NULL IDENTITY,
+    [UserName] nvarchar(max) NOT NULL,
+    [stockcode] nvarchar(450) NOT NULL,
+    [tradedate] int NOT NULL,
+    [price] decimal(8,4) NOT NULL,
+    [direction] nvarchar(max) NOT NULL,
+    [quantity] int NOT NULL,
+    [amount] decimal(12,4) NOT NULL,
+    [expectsaleprice] decimal(18,2) NULL,
+    [expectsaledays] int NULL,
+    [transactionstrategy] nvarchar(max) NULL,
+    CONSTRAINT [PK_TransactionRecord] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_TransactionRecord_StockBase_stockcode] FOREIGN KEY ([stockcode]) REFERENCES [StockBase] ([code]) ON DELETE CASCADE
+);
+2025-12-08 15:51:41.018 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [StockProfit] (
+    [Id] int NOT NULL IDENTITY,
+    [StockDetailId] int NOT NULL,
+    [period] nvarchar(max) NULL,
+    [Revenue] decimal(18,4) NOT NULL,
+    [RevenueGrowthRate] decimal(18,4) NOT NULL,
+    [NetProfit] decimal(18,4) NOT NULL,
+    [NetProfitGrowthRate] decimal(18,4) NOT NULL,
+    [NetProfitENL] decimal(18,4) NOT NULL,
+    [NetProfitENLGrowthRate] decimal(18,4) NOT NULL,
+    [EPS] decimal(18,4) NOT NULL,
+    CONSTRAINT [PK_StockProfit] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_StockProfit_StockDetail_StockDetailId] FOREIGN KEY ([StockDetailId]) REFERENCES [StockDetail] ([Id]) ON DELETE CASCADE
+);
+2025-12-08 15:51:41.020 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [StockShareHolder] (
+    [Id] int NOT NULL IDENTITY,
+    [stockcode] nvarchar(max) NOT NULL,
+    [StockDetailId] int NOT NULL,
+    [numOrigin] decimal(18,2) NOT NULL,
+    [change] decimal(8,4) NOT NULL,
+    [price] decimal(8,4) NOT NULL,
+    [reportDate] int NOT NULL,
+    CONSTRAINT [PK_StockShareHolder] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_StockShareHolder_StockDetail_StockDetailId] FOREIGN KEY ([StockDetailId]) REFERENCES [StockDetail] ([Id]) ON DELETE CASCADE
+);
+2025-12-08 15:51:41.022 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_BlockKData_blockcode] ON [BlockKData] ([blockcode]);
+2025-12-08 15:51:41.023 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_BlockKData_tradedate] ON [BlockKData] ([tradedate]);
+2025-12-08 15:51:41.025 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_BlockStock_blockcode] ON [BlockStock] ([blockcode]);
+2025-12-08 15:51:41.026 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_BlockStock_stockcode] ON [BlockStock] ([stockcode]);
+2025-12-08 15:51:41.027 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_HoldingDetail_stockcode] ON [HoldingDetail] ([stockcode]);
+2025-12-08 15:51:41.028 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_IndexKData_tradedate] ON [IndexKData] ([tradedate]);
+2025-12-08 15:51:41.029 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_StockDetail_stockcode] ON [StockDetail] ([stockcode]);
+2025-12-08 15:51:41.030 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_StockKData_stockcode] ON [StockKData] ([stockcode]);
+2025-12-08 15:51:41.032 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_StockKData_trade_date] ON [StockKData] ([trade_date]);
+2025-12-08 15:51:41.033 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_StockKDataWeek_stockcode] ON [StockKDataWeek] ([stockcode]);
+2025-12-08 15:51:41.034 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_StockKDataWeek_tradedate] ON [StockKDataWeek] ([tradedate]);
+2025-12-08 15:51:41.035 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_StockProfit_StockDetailId] ON [StockProfit] ([StockDetailId]);
+2025-12-08 15:51:41.036 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_StockReminder_stockcode] ON [StockReminder] ([stockcode]);
+2025-12-08 15:51:41.037 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_StockShareHolder_StockDetailId] ON [StockShareHolder] ([StockDetailId]);
+2025-12-08 15:51:41.038 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_StockWave_stockcode] ON [StockWave] ([stockcode]);
+2025-12-08 15:51:41.039 +08:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_TransactionRecord_stockcode] ON [TransactionRecord] ([stockcode]);
+2025-12-08 15:51:41.045 +08:00 [INF] Database ensured created
+2025-12-08 15:51:41.072 +08:00 [INF] User profile is available. Using 'C:\Users\Golden\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-08 15:51:41.258 +08:00 [INF] Now listening on: https://localhost:5194
+2025-12-08 15:51:41.258 +08:00 [INF] Now listening on: http://localhost:5195
+2025-12-08 15:51:41.300 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-08 15:51:41.300 +08:00 [INF] Hosting environment: Development
+2025-12-08 15:51:41.300 +08:00 [INF] Content root path: D:\Personal\Stock\SourceCode\StockAgent888\src\Api.Web
+2025-12-08 15:51:42.143 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/ - null null
+2025-12-08 15:51:42.323 +08:00 [INF] HTTP GET / responded 404 in 43.6013 ms
+2025-12-08 15:51:42.326 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/ - 404 0 null 183.3732ms
+2025-12-08 15:51:42.327 +08:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:5194/, Response status code: 404
+2025-12-08 15:51:47.761 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/swagger/index.html - null null
+2025-12-08 15:51:47.827 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/swagger/index.html - 200 null text/html;charset=utf-8 65.7397ms
+2025-12-08 15:51:47.848 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-08 15:51:47.849 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/_vs/browserLink - null null
+2025-12-08 15:51:47.854 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/_framework/aspnetcore-browser-refresh.js - 200 16498 application/javascript; charset=utf-8 5.9915ms
+2025-12-08 15:51:47.887 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/_vs/browserLink - 200 null text/javascript; charset=UTF-8 38.1821ms
+2025-12-08 15:51:47.924 +08:00 [INF] Request starting HTTP/2 GET https://localhost:5194/swagger/v1/swagger.json - null null
+2025-12-08 15:51:47.931 +08:00 [INF] Request finished HTTP/2 GET https://localhost:5194/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 7.2269ms

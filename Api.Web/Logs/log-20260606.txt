@@ -1,0 +1,205 @@
+2026-06-06 23:22:35.520 +08:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE DATABASE `LeaveSystem`;
+2026-06-06 23:22:35.707 +08:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER DATABASE CHARACTER SET utf8mb4;
+2026-06-06 23:22:35.748 +08:00 [INF] Executed DbCommand (41ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `News` (
+    `NewsId` int NOT NULL AUTO_INCREMENT,
+    `NewsDate` datetime(6) NOT NULL,
+    `Content` varchar(1000) CHARACTER SET utf8mb4 NULL,
+    `Status` tinyint(1) NOT NULL,
+    CONSTRAINT `PK_News` PRIMARY KEY (`NewsId`)
+) CHARACTER SET=utf8mb4;
+2026-06-06 23:22:35.778 +08:00 [INF] Executed DbCommand (30ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `StockBase` (
+    `code` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `name` varchar(200) CHARACTER SET utf8mb4 NOT NULL,
+    `isfavorite` tinyint(1) NOT NULL,
+    `isexclude` tinyint(1) NOT NULL,
+    CONSTRAINT `PK_StockBase` PRIMARY KEY (`code`)
+) CHARACTER SET=utf8mb4;
+2026-06-06 23:22:35.808 +08:00 [INF] Executed DbCommand (30ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `Users` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `Username` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
+    `Role` varchar(20) CHARACTER SET utf8mb4 NOT NULL,
+    CONSTRAINT `PK_Users` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;
+2026-06-06 23:22:35.852 +08:00 [INF] Executed DbCommand (44ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `LeaveQuotas` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `UserId` int NOT NULL,
+    `LeaveType` varchar(20) CHARACTER SET utf8mb4 NOT NULL,
+    `TotalDays` decimal(5,1) NOT NULL,
+    `RemainingDays` decimal(5,1) NOT NULL,
+    `UpdatedAt` datetime(6) NOT NULL,
+    CONSTRAINT `PK_LeaveQuotas` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_LeaveQuotas_Users_UserId` FOREIGN KEY (`UserId`) REFERENCES `Users` (`Id`) ON DELETE CASCADE
+) CHARACTER SET=utf8mb4;
+2026-06-06 23:22:35.904 +08:00 [INF] Executed DbCommand (51ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE `LeaveRequests` (
+    `Id` int NOT NULL AUTO_INCREMENT,
+    `ApplicantId` int NOT NULL,
+    `LeaveType` varchar(20) CHARACTER SET utf8mb4 NOT NULL,
+    `StartTime` datetime(6) NOT NULL,
+    `EndTime` datetime(6) NOT NULL,
+    `Duration` decimal(5,1) NOT NULL,
+    `Reason` varchar(500) CHARACTER SET utf8mb4 NOT NULL,
+    `Status` varchar(20) CHARACTER SET utf8mb4 NOT NULL,
+    `ApproverId` int NULL,
+    `ApprovalComment` varchar(500) CHARACTER SET utf8mb4 NULL,
+    `CreatedAt` datetime(6) NOT NULL,
+    `UpdatedAt` datetime(6) NOT NULL,
+    CONSTRAINT `PK_LeaveRequests` PRIMARY KEY (`Id`),
+    CONSTRAINT `FK_LeaveRequests_Users_ApplicantId` FOREIGN KEY (`ApplicantId`) REFERENCES `Users` (`Id`) ON DELETE RESTRICT,
+    CONSTRAINT `FK_LeaveRequests_Users_ApproverId` FOREIGN KEY (`ApproverId`) REFERENCES `Users` (`Id`) ON DELETE RESTRICT
+) CHARACTER SET=utf8mb4;
+2026-06-06 23:22:35.940 +08:00 [INF] Executed DbCommand (36ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_LeaveQuotas_UserId` ON `LeaveQuotas` (`UserId`);
+2026-06-06 23:22:35.973 +08:00 [INF] Executed DbCommand (33ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_LeaveRequests_ApplicantId` ON `LeaveRequests` (`ApplicantId`);
+2026-06-06 23:22:36.000 +08:00 [INF] Executed DbCommand (27ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX `IX_LeaveRequests_ApproverId` ON `LeaveRequests` (`ApproverId`);
+2026-06-06 23:22:36.192 +08:00 [INF] Executed DbCommand (21ms) [Parameters=[@__user_Username_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Users` AS `u`
+    WHERE `u`.`Username` = @__user_Username_0)
+2026-06-06 23:22:36.247 +08:00 [INF] Executed DbCommand (0ms) [Parameters=[@__user_Username_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Users` AS `u`
+    WHERE `u`.`Username` = @__user_Username_0)
+2026-06-06 23:22:36.248 +08:00 [INF] Executed DbCommand (0ms) [Parameters=[@__user_Username_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Users` AS `u`
+    WHERE `u`.`Username` = @__user_Username_0)
+2026-06-06 23:22:36.289 +08:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (Size = 20), @p1='?' (Size = 50), @p2='?' (Size = 20), @p3='?' (Size = 50), @p4='?' (Size = 20), @p5='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `Users` (`Role`, `Username`)
+VALUES (@p0, @p1);
+SELECT `Id`
+FROM `Users`
+WHERE ROW_COUNT() = 1 AND `Id` = LAST_INSERT_ID();
+
+INSERT INTO `Users` (`Role`, `Username`)
+VALUES (@p2, @p3);
+SELECT `Id`
+FROM `Users`
+WHERE ROW_COUNT() = 1 AND `Id` = LAST_INSERT_ID();
+
+INSERT INTO `Users` (`Role`, `Username`)
+VALUES (@p4, @p5);
+SELECT `Id`
+FROM `Users`
+WHERE ROW_COUNT() = 1 AND `Id` = LAST_INSERT_ID();
+2026-06-06 23:22:36.304 +08:00 [INF] Database connected and initialized.
+2026-06-06 23:22:36.318 +08:00 [INF] User profile is available. Using 'C:\Users\10856\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-06-06 23:22:36.328 +08:00 [INF] Creating key {84a18a26-d316-4911-b9b1-2e86c44f5429} with creation date 2026-06-06 15:22:36Z, activation date 2026-06-06 15:22:36Z, and expiration date 2026-09-04 15:22:36Z.
+2026-06-06 23:22:36.336 +08:00 [INF] Writing data to file 'C:\Users\10856\AppData\Local\ASP.NET\DataProtection-Keys\key-84a18a26-d316-4911-b9b1-2e86c44f5429.xml'.
+2026-06-06 23:22:36.449 +08:00 [INF] Now listening on: http://localhost:5000
+2026-06-06 23:22:36.451 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-06 23:22:36.452 +08:00 [INF] Hosting environment: Development
+2026-06-06 23:22:36.452 +08:00 [INF] Content root path: D:\Project\LeaveSystem_Backend\Api.Web
+2026-06-06 23:24:14.275 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/index.html - null null
+2026-06-06 23:24:14.286 +08:00 [WRN] Failed to determine the https port for redirect.
+2026-06-06 23:24:14.748 +08:00 [INF] HTTP GET /swagger/index.html responded 200 in 462.4666 ms
+2026-06-06 23:24:14.751 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/index.html - 200 null text/html;charset=utf-8 476.3287ms
+2026-06-06 23:24:33.962 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/index.html - null null
+2026-06-06 23:24:33.964 +08:00 [INF] HTTP GET /swagger/index.html responded 200 in 1.4694 ms
+2026-06-06 23:24:33.964 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/index.html - 200 null text/html;charset=utf-8 2.1914ms
+2026-06-06 23:24:33.968 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/swagger-ui.css - null null
+2026-06-06 23:24:33.968 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/swagger-ui-bundle.js - null null
+2026-06-06 23:24:33.968 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/swagger-ui-standalone-preset.js - null null
+2026-06-06 23:24:33.980 +08:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2026-06-06 23:24:33.980 +08:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2026-06-06 23:24:33.980 +08:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2026-06-06 23:24:33.981 +08:00 [INF] HTTP GET /swagger/swagger-ui.css responded 200 in 13.2675 ms
+2026-06-06 23:24:33.981 +08:00 [INF] HTTP GET /swagger/swagger-ui-standalone-preset.js responded 200 in 12.5570 ms
+2026-06-06 23:24:33.981 +08:00 [INF] HTTP GET /swagger/swagger-ui-bundle.js responded 200 in 13.2090 ms
+2026-06-06 23:24:33.981 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/swagger-ui-standalone-preset.js - 200 312163 text/javascript 12.9066ms
+2026-06-06 23:24:33.981 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/swagger-ui-bundle.js - 200 1061536 text/javascript 13.5765ms
+2026-06-06 23:24:33.981 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/swagger-ui.css - 200 144929 text/css 13.6164ms
+2026-06-06 23:24:34.065 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/v1/swagger.json - null null
+2026-06-06 23:24:34.089 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/favicon-32x32.png - null null
+2026-06-06 23:24:34.090 +08:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
+2026-06-06 23:24:34.090 +08:00 [INF] HTTP GET /swagger/favicon-32x32.png responded 200 in 0.4056 ms
+2026-06-06 23:24:34.090 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/favicon-32x32.png - 200 628 image/png 0.6688ms
+2026-06-06 23:24:34.095 +08:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 29.6576 ms
+2026-06-06 23:24:34.095 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 29.8791ms
+2026-06-06 23:25:18.251 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/index.html - null null
+2026-06-06 23:25:18.251 +08:00 [INF] HTTP GET /swagger/index.html responded 200 in 0.3509 ms
+2026-06-06 23:25:18.251 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/index.html - 200 null text/html;charset=utf-8 0.6507ms
+2026-06-06 23:25:18.260 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/swagger-ui.css - null null
+2026-06-06 23:25:18.261 +08:00 [INF] Sending file. Request path: '/swagger-ui.css'. Physical path: 'N/A'
+2026-06-06 23:25:18.261 +08:00 [INF] HTTP GET /swagger/swagger-ui.css responded 200 in 0.7053 ms
+2026-06-06 23:25:18.261 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/swagger-ui.css - 200 144929 text/css 0.8513ms
+2026-06-06 23:25:18.262 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/swagger-ui-bundle.js - null null
+2026-06-06 23:25:18.262 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/swagger-ui-standalone-preset.js - null null
+2026-06-06 23:25:18.268 +08:00 [INF] Sending file. Request path: '/swagger-ui-bundle.js'. Physical path: 'N/A'
+2026-06-06 23:25:18.268 +08:00 [INF] HTTP GET /swagger/swagger-ui-bundle.js responded 200 in 5.6027 ms
+2026-06-06 23:25:18.268 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/swagger-ui-bundle.js - 200 1061536 text/javascript 5.7175ms
+2026-06-06 23:25:18.286 +08:00 [INF] Sending file. Request path: '/swagger-ui-standalone-preset.js'. Physical path: 'N/A'
+2026-06-06 23:25:18.286 +08:00 [INF] HTTP GET /swagger/swagger-ui-standalone-preset.js responded 200 in 23.4124 ms
+2026-06-06 23:25:18.286 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/swagger-ui-standalone-preset.js - 200 312163 text/javascript 23.5666ms
+2026-06-06 23:25:18.478 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/v1/swagger.json - null null
+2026-06-06 23:25:18.480 +08:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 1.4830 ms
+2026-06-06 23:25:18.480 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 1.7004ms
+2026-06-06 23:25:18.489 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/favicon-16x16.png - null null
+2026-06-06 23:25:18.489 +08:00 [INF] Sending file. Request path: '/favicon-16x16.png'. Physical path: 'N/A'
+2026-06-06 23:25:18.489 +08:00 [INF] HTTP GET /swagger/favicon-16x16.png responded 200 in 0.1970 ms
+2026-06-06 23:25:18.489 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/favicon-16x16.png - 200 665 image/png 0.2974ms
+2026-06-06 23:36:41.017 +08:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'LeaveSystem'
+2026-06-06 23:36:41.154 +08:00 [INF] Executed DbCommand (12ms) [Parameters=[@__user_Username_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Users` AS `u`
+    WHERE `u`.`Username` = @__user_Username_0)
+2026-06-06 23:36:41.157 +08:00 [INF] Executed DbCommand (0ms) [Parameters=[@__user_Username_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Users` AS `u`
+    WHERE `u`.`Username` = @__user_Username_0)
+2026-06-06 23:36:41.158 +08:00 [INF] Executed DbCommand (0ms) [Parameters=[@__user_Username_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Users` AS `u`
+    WHERE `u`.`Username` = @__user_Username_0)
+2026-06-06 23:36:41.162 +08:00 [INF] Database connected and initialized.
+2026-06-06 23:36:41.171 +08:00 [INF] User profile is available. Using 'C:\Users\10856\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-06-06 23:36:41.202 +08:00 [INF] Now listening on: http://localhost:5000
+2026-06-06 23:36:41.203 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-06 23:36:41.203 +08:00 [INF] Hosting environment: Development
+2026-06-06 23:36:41.203 +08:00 [INF] Content root path: D:\Project\LeaveSystem_Backend\Api.Web
+2026-06-06 23:51:32.362 +08:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM information_schema.tables
+WHERE table_type = 'BASE TABLE' AND table_schema = 'LeaveSystem'
+2026-06-06 23:51:32.486 +08:00 [INF] Executed DbCommand (12ms) [Parameters=[@__user_Username_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Users` AS `u`
+    WHERE `u`.`Username` = @__user_Username_0)
+2026-06-06 23:51:32.489 +08:00 [INF] Executed DbCommand (0ms) [Parameters=[@__user_Username_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Users` AS `u`
+    WHERE `u`.`Username` = @__user_Username_0)
+2026-06-06 23:51:32.490 +08:00 [INF] Executed DbCommand (0ms) [Parameters=[@__user_Username_0='?' (Size = 50)], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM `Users` AS `u`
+    WHERE `u`.`Username` = @__user_Username_0)
+2026-06-06 23:51:32.493 +08:00 [INF] Database connected and initialized.
+2026-06-06 23:51:32.502 +08:00 [INF] User profile is available. Using 'C:\Users\10856\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-06-06 23:51:32.529 +08:00 [INF] Now listening on: http://localhost:5000
+2026-06-06 23:51:32.530 +08:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-06 23:51:32.531 +08:00 [INF] Hosting environment: Development
+2026-06-06 23:51:32.531 +08:00 [INF] Content root path: D:\Project\LeaveSystem_Backend\Api.Web
+2026-06-06 23:52:34.605 +08:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/swagger/index.html - null null
+2026-06-06 23:52:34.613 +08:00 [WRN] Failed to determine the https port for redirect.
+2026-06-06 23:52:34.657 +08:00 [INF] HTTP GET /swagger/index.html responded 200 in 44.0382 ms
+2026-06-06 23:52:34.660 +08:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/swagger/index.html - 200 null text/html;charset=utf-8 55.3722ms

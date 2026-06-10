@@ -1,6 +1,12 @@
+using Api.Common.DI;
 using Api.Common.Repositories;
+using Api.Contract.Model;
+using Api.DAL;
 using Api.DAL.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Quartz.Impl.AdoJobStore.Common;
+using System;
 
 namespace Api.DAL
 {

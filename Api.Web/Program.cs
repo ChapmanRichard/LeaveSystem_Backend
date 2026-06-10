@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Api.Contract.Model;
 using Api.DAL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -83,7 +84,28 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<LeaveSystemDBContext>();
     db.Database.EnsureCreated();
+    SeedInitialUsers(db);
     Log.Information("Database connected and initialized.");
 }
 
 app.Run();
+
+static void SeedInitialUsers(LeaveSystemDBContext db)
+{
+    var usersToSeed = new[]
+    {
+        new User { Username = "E1001", Role = "Employee" },
+        new User { Username = "E1002", Role = "Manager" },
+        new User { Username = "E1003", Role = "Admin" }
+    };
+
+    foreach (var user in usersToSeed)
+    {
+        if (!db.Users.Any(x => x.Username == user.Username))
+        {
+            db.Users.Add(user);
+        }
+    }
+
+    db.SaveChanges();
+}
