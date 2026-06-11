@@ -1,165 +1,165 @@
 ---
 name: asl-dotnet-generate-models-from-db-design
-description: "Use when: 需要根据任意数据库设计文档（Markdown/表格/文本）生成或更新 C# Model/Entity，包含字段类型、可空性、关系、约束校验与差异报告。关键词: 数据库设计, Model 生成, Entity, EF Core, schema to model"
+description: "Use when: you need to generate or update C# Models/Entities from any database design document (Markdown/table/text), including field types, nullability, relationships, constraint validation, and difference reports. Keywords: database design, Model generation, Entity, EF Core, schema to model"
 ---
 
-# 根据数据库设计文档生成 Model
+# Generate Models from Database Design Documents
 
-## 意图
+## Intent
 
-该 Skill 用于基于任意数据库设计文档生成模型定义，适用于首次建模、模型同步、结构变更补丁。
+This Skill is used to generate model definitions from any database design document. It is suitable for first-time modeling, model synchronization, and structural change patches.
 
-目标结果:
-- 从文档中提取表、字段、主外键、可空、长度、精度、默认值和值域。
-- 生成或更新对应 C# Model/Entity，保证字段语义与数据库设计一致。
-- 输出差异报告、假设说明和验证结果，降低遗漏与误改风险。
+Expected outcomes:
+- Extract tables, fields, primary/foreign keys, nullability, length, precision, default values, and value domains from the document.
+- Generate or update corresponding C# Models/Entities, ensuring field semantics are consistent with the database design.
+- Output difference reports, assumption notes, and validation results to reduce missed items and accidental changes.
 
-## 输入
+## Input
 
-必需输入:
-- 一份数据库设计文档路径（建议为 Markdown）
+Required input:
+- A database design document path, preferably Markdown
 
-可选输入:
-- 目标输出层（如 `Api.Contract/Model`、`Api.DAL`）
-- 已存在模型目录（用于差异更新）
-- 技术约束（例如：是否允许 enum、是否使用 DataAnnotations、是否有 nullable context）
+Optional input:
+- Target output layer, such as `Api.Contract/Model` or `Api.DAL`
+- Existing model directory, used for differential updates
+- Technical constraints, such as whether enum is allowed, whether DataAnnotations are used, and whether nullable context exists
 
-默认示例输入（仅示例，不是绑定规则）:
+Default sample input (example only, not a binding rule):
 - `Spec/Db.md`
 
-## 规则
+## Rules
 
-1. 单一事实来源
-- 始终以“用户指定的数据库设计文档”作为主依据。
-- 如果现有代码与文档冲突，优先遵循文档并输出差异说明。
+1. Single source of truth
+- Always use the “user-specified database design document” as the primary basis.
+- If existing code conflicts with the document, prefer the document and output difference notes.
 
-2. 命名与结构
-- 表名转类名：默认使用单数 PascalCase（可按项目约定覆盖）。
-- 字段名转属性名：PascalCase。
-- 禁止无依据重命名；若命名冲突需显式说明处理策略。
+2. Naming and structure
+- Table name to class name: singular PascalCase by default, overrideable by project conventions.
+- Field name to property name: PascalCase.
+- Renaming without basis is prohibited; if naming conflicts occur, explicitly explain the handling strategy.
 
-3. 类型映射（MySQL 8 -> C#）
+3. Type mapping (MySQL 8 -> C#)
 - `INT` -> `int`
 - `VARCHAR(n)` -> `string`
 - `DATETIME` -> `DateTime`
 - `DECIMAL(5,1)` -> `decimal`
-- 其他数据库类型按最近似 C# 类型映射，并在输出中写明映射依据。
+- Map other database types to the closest C# type and state the mapping rationale in the output.
 
-4. 可空性映射
-- 数据库非空字段 -> C# 非可空属性（或按项目约定使用 required/init）。
-- 数据库可空字段 -> C# 可空属性，如 `int?`、`string?`、`DateTime?`。
-- 若文档未明确可空性，必须在“假设说明”中标记待确认。
+4. Nullability mapping
+- Non-null database fields -> non-null C# properties, or required/init according to project conventions.
+- Nullable database fields -> nullable C# properties, such as `int?`, `string?`, and `DateTime?`.
+- If the document does not explicitly state nullability, mark it as pending confirmation in the “Assumptions” section.
 
-5. 精度与领域约束
-- 小数精度字段必须使用 `decimal`，不得降级为 float/double。
-- 长度约束、范围约束、枚举值约束应在模型或校验器体现。
-- 若约束只能在数据库层实现，也需在输出中标注。
+5. Precision and domain constraints
+- Decimal precision fields must use `decimal` and must not be downgraded to float/double.
+- Length constraints, range constraints, and enum value constraints should be represented in models or validators.
+- If a constraint can only be implemented at the database layer, note it in the output.
 
-6. 关系建模
-- 明确 1-1、1-n、n-n 关系及其外键来源。
-- 必须补充导航属性；否则保留外键字段并说明。
+6. Relationship modeling
+- Clearly identify 1-1, 1-n, and n-n relationships and their foreign key sources.
+- Navigation properties must be added; otherwise, keep foreign key fields and explain why.
 
-7. 状态和值域一致性
-- 文档定义的固定值集合应优先生成 enum 或常量集合。
-- 如果受兼容性约束无法用 enum，保留 string 并增加校验逻辑。
+7. State and value-domain consistency
+- Fixed value sets defined by the document should preferably generate enums or constant collections.
+- If compatibility constraints prevent using enum, keep string and add validation logic.
 
-8. 时间字段
-- 统一识别创建时间、更新时间、软删除时间等语义字段。
-- 默认值（如 `CURRENT_TIMESTAMP`）需通过迁移或 DB 配置对齐。
+8. Time fields
+- Uniformly identify semantic fields such as created time, updated time, and soft-deleted time.
+- Default values such as `CURRENT_TIMESTAMP` must be aligned through migrations or DB configuration.
 
-9. 兼容性
-- 未经明确迁移说明，不要对既有公开契约模型做破坏性重命名。
-- 命名空间与文件落位必须符合当前解决方案约定。
-- 当数据库设计收敛了历史上的多余字段时，优先以数据库设计为准同步删除或替换实体属性；若会影响现有编译或运行链路，必须同步调整依赖代码，并在差异说明中标注兼容处理方案。
-- 不要为了“先让编译通过”而保留未出现在设计文档中的持久化字段；若确实需要临时兼容，必须显式标记为过渡性方案并说明后续移除计划。
+9. Compatibility
+- Do not perform breaking renames on existing public contract models without explicit migration instructions.
+- Namespaces and file placement must comply with the current solution conventions.
+- When the database design converges historically redundant fields, prioritize the database design and synchronously delete or replace entity properties. If this affects existing compilation or runtime chains, update dependent code as well and note the compatibility handling solution in the difference explanation.
+- Do not keep persistent fields that do not appear in the design document merely to “make compilation pass first”. If temporary compatibility is truly needed, explicitly mark it as a transitional solution and explain the later removal plan.
 
-## 工作流
+## Workflow
 
-1. 读取并解析结构
-- 读取用户指定文档并结构化提取 schema 信息。
-- 若文档格式不标准，先进行字段标准化再映射。
+1. Read and parse structure
+- Read the user-specified document and structurally extract schema information.
+- If the document format is non-standard, normalize fields before mapping.
 
-2. 盘点现有代码
-- 检查 Contract 和 DAL 是否已存在对应模型。
-- 识别现有命名风格、nullable 上下文与注解习惯。
+2. Inventory existing code
+- Check whether corresponding models already exist in Contract and DAL.
+- Identify existing naming style, nullable context, and annotation habits.
 
-3. 生成模型定义
-- 按“表 -> 类、字段 -> 属性”生成或更新模型。
-- 对主键、外键、索引相关字段保留清晰语义。
+3. Generate model definitions
+- Generate or update models according to “table -> class, field -> property”.
+- Preserve clear semantics for fields related to primary keys, foreign keys, and indexes.
 
-4. 增加校验与领域约束
-- 按当前架构选择 DataAnnotations 或 Validator。
-- 确保字符串长度、可空性、值域与目标文档一致。
+4. Add validation and domain constraints
+- Choose DataAnnotations or Validator according to the current architecture.
+- Ensure string length, nullability, and value domains match the target document.
 
-5. 校验映射一致性
-- 确保 DTO/Entity 映射可覆盖所有字段。
-- 确保高精度小数字段未被误用为 float/double。
-- 检查新增字段是否影响序列化、映射与查询逻辑。
+5. Validate mapping consistency
+- Ensure DTO/Entity mappings can cover all fields.
+- Ensure high-precision decimal fields are not mistakenly used as float/double.
+- Check whether newly added fields affect serialization, mapping, and query logic.
 
-6. 输出结果摘要
-- 列出创建/修改文件。
-- 列出与目标数据库设计文档的差异。
-- 列出需要确认的假设。
+6. Output result summary
+- List created/modified files.
+- List differences from the target database design document.
+- List assumptions requiring confirmation.
 
-## 参考用例
+## Reference Cases
 
-### 用例 1：首次生成模型（任意项目）
-提示词示例:
-- "读取 docs/database-design.md，在 Contract 层创建对应模型，类型、可空、长度约束必须准确。"
+### Case 1: First-time model generation (any project)
+Prompt example:
+- "Read docs/database-design.md and create corresponding models in the Contract layer. Types, nullability, and length constraints must be accurate."
 
-预期结果:
-- 按文档中的所有表生成模型类。
-- 字段约束完整映射。
+Expected results:
+- Generate model classes for all tables in the document.
+- Fully map field constraints.
 
-### 用例 2：同步已存在模型
-提示词示例:
-- "对比现有实体与新的数据库设计文档，仅修复缺失或错误属性，保持最小 diff。"
+### Case 2: Synchronize existing models
+Prompt example:
+- "Compare existing entities with the new database design document, fix only missing or incorrect properties, and keep the diff minimal."
 
-预期结果:
-- 以最小变更完成修复。
-- 不引入无关命名或风格改动。
+Expected results:
+- Complete fixes with minimal changes.
+- Do not introduce unrelated naming or style changes.
 
-### 用例 3：安全引入枚举
-提示词示例:
-- "若与现有 API 契约兼容，将固定值字段改为 enum；否则保留 string 并补充常量校验。"
+### Case 3: Safely introduce enums
+Prompt example:
+- "If compatible with the existing API contract, convert fixed-value fields to enum; otherwise keep string and add constant validation."
 
-预期结果:
-- 优先类型安全方案。
-- 保证向后兼容。
+Expected results:
+- Prefer a type-safe solution.
+- Ensure backward compatibility.
 
-## 验证清单
+## Validation Checklist
 
-在提交前逐项核对:
+Check each item before submission:
 
-- [ ] 目标数据库设计文档中的所有表都已映射为模型类。
-- [ ] 文档字段在模型层逐一覆盖且无重复遗漏。
-- [ ] C# 类型与数据库类型匹配（如 `DECIMAL(5,1)` -> `decimal`，`DATETIME` -> `DateTime`）。
-- [ ] 可空字段标记正确。
-- [ ] 长度约束正确体现。
-- [ ] 固定值约束已落实（枚举或校验器）。
-- [ ] 关系属性与外键定义一致。
-- [ ] 未引入破坏性契约变更。
-- [ ] 文件路径与命名空间符合现有项目约定。
-- [ ] 若现有代码与目标文档不一致，输出中包含差异说明。
-- [ ] 若移除或新增字段会影响现有调用方，已同步更新依赖代码并记录兼容策略。
-- [ ] 不存在未在数据库设计文档中定义、却被误当作持久化字段保留的属性。
+- [ ] All tables in the target database design document have been mapped to model classes.
+- [ ] Documented fields are covered one by one at the model layer with no duplicates or omissions.
+- [ ] C# types match database types, such as `DECIMAL(5,1)` -> `decimal` and `DATETIME` -> `DateTime`.
+- [ ] Nullable fields are marked correctly.
+- [ ] Length constraints are correctly represented.
+- [ ] Fixed-value constraints are implemented, through enum or validator.
+- [ ] Relationship properties align with foreign key definitions.
+- [ ] No breaking contract changes are introduced.
+- [ ] File paths and namespaces comply with existing project conventions.
+- [ ] If existing code differs from the target document, the output includes difference notes.
+- [ ] If removing or adding fields affects existing callers, dependent code has been updated and compatibility strategy has been recorded.
+- [ ] There are no properties that are not defined in the database design document but are mistakenly retained as persistent fields.
 
-## 输出模板
+## Output Template
 
-运行本 Skill 时，输出按以下结构组织:
+When running this Skill, organize output using the following structure:
 
-1. 创建/修改文件
-- 列出精确路径
+1. Created/modified files
+- List exact paths
 
-2. 模型摘要
-- 每个类一段，说明关键字段
+2. Model summary
+- One paragraph per class explaining key fields
 
-3. 约束覆盖说明
-- 类型、可空、长度、值域、关系校验结果
+3. Constraint coverage notes
+- Type, nullability, length, value domain, and relationship validation results
 
-4. 差异与假设
-- 与目标数据库设计文档的差异
-- 需要用户确认的假设
+4. Differences and assumptions
+- Differences from the target database design document
+- Assumptions requiring user confirmation
 
 ## English Version
 

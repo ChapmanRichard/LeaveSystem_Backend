@@ -1,142 +1,142 @@
 ---
 name: asl-general-check-spelling
-description: "Use when: 需要对指定代码范围执行拼写检查，覆盖 Markdown、注释、日志文案与可读字符串，输出可复核错词清单与修复建议，并在确认后批量修复。关键词: 拼写检查, spell check, typo, cspell, typos, markdown, comments"
-argument-hint: "输入检查范围与规则，例如：检查 Spec/ 和 Api.Web/Controllers，启用严格模式并保留产品术语白名单"
+description: "Use when: you need to run spell checks on a specified code scope, covering Markdown, comments, log copy, and readable strings; output a reviewable misspelling list and fix suggestions, and batch-fix after confirmation. Keywords: spell check, spell check, typo, cspell, typos, markdown, comments"
+argument-hint: "Enter the check scope and rules, for example: check Spec/ and Api.Web/Controllers, enable strict mode, and keep the product terminology whitelist"
 ---
 
-# 拼写检查 Skill
+# Spell Check Skill
 
-## 意图
+## Intent
 
-将“手工找错别字”变成可重复执行的拼写检查流程，兼顾准确率与可落地修复。
+Turn “manually finding typos” into a repeatable spell-check workflow that balances accuracy and implementable fixes.
 
-该 Skill 的目标:
-- 在用户指定范围内识别拼写错误、常见 typo、大小写错误与术语误写
-- 扫描代码块或注释中的不恰当标点（重复标点、全半角混用、语义冲突标点）
-- 识别技术术语拼写准确性（如 Async、Middleware、Repository、DTO）
-- 检查变量名是否符合英文语法逻辑（如布尔变量优先使用 is/has/can 前缀）
-- 输出带证据的位置清单（文件、行号、原词、建议词、上下文）
-- 在用户确认后执行最小化修复，避免破坏代码行为
+The goals of this Skill are:
+- Identify spelling errors, common typos, casing errors, and terminology mistakes within the user-specified scope
+- Scan inappropriate punctuation in code blocks or comments, such as duplicated punctuation, mixed full-width/half-width punctuation, and semantically conflicting punctuation
+- Identify spelling accuracy of technical terms, such as Async, Middleware, Repository, and DTO
+- Check whether variable names conform to English grammar logic, such as preferring is/has/can prefixes for Boolean variables
+- Output an evidence-backed location list, including file, line number, original word, suggested word, and context
+- After user confirmation, perform minimal fixes to avoid breaking code behavior
 
-## 适用场景
+## Applicable Scenarios
 
-- PR 合并前做文档与注释质量门禁
-- API 返回文案、日志文案、提示语统一性检查
-- 需求文档、测试文档、技术规范中的英文拼写与术语一致性检查
-- 重构后批量修正 typo，减少维护噪音
+- Documentation and comment quality gates before PR merge
+- Consistency checks for API response copy, log copy, and prompts
+- English spelling and terminology consistency checks in requirements documents, test documents, and technical standards
+- Batch typo corrections after refactoring to reduce maintenance noise
 
-## 输入
+## Input
 
-必需输入:
-- 检查范围: 文件、目录、glob 或变更集（如 PR diff）
+Required input:
+- Check scope: files, directories, globs, or change sets, such as a PR diff
 
-可选输入:
-- 检查模式: `quick` / `standard` / `strict`
-- 语言与词典: 英文、中文术语白名单、项目专有名词白名单
-- 检查对象: 文档 + 注释 + 字符串（默认），可选启用标识符语法检查
-- 自动修复: `true/false`（默认 false）
-- 输出粒度: 仅问题列表 / 问题 + 修复补丁
+Optional input:
+- Check mode: `quick` / `standard` / `strict`
+- Language and dictionaries: English, Chinese terminology whitelist, project-specific term whitelist
+- Check targets: documents + comments + strings by default, with optional identifier grammar checking
+- Auto-fix: `true/false` (default: false)
+- Output granularity: issue list only / issues + fix patch
 
-## 决策分支
+## Decision Branches
 
-1. 范围分支
-- 若用户给出明确路径，按路径检查
-- 若未给范围，默认检查最近变更文件；再回退到文档与接口层目录
+1. Scope branch
+- If the user provides explicit paths, check those paths
+- If no scope is provided, check recently changed files by default; then fall back to documentation and interface-layer directories
 
-2. 严格度分支
-- `quick`: 仅高置信 typo（低误报）
-- `standard`: 平衡召回与误报（默认）
-- `strict`: 包含风格一致性（大小写、连字符、缩写展开）+ 标点规范 + 变量命名语法逻辑
+2. Strictness branch
+- `quick`: high-confidence typos only (low false positives)
+- `standard`: balanced recall and false positives (default)
+- `strict`: includes style consistency (casing, hyphens, abbreviation expansion) + punctuation standards + variable naming grammar logic
 
-3. 词典分支
-- 若存在项目术语表，先加载术语白名单
-- 若不存在，先生成候选白名单并请求用户确认后持久化
+3. Dictionary branch
+- If a project terminology table exists, load the term whitelist first
+- If none exists, first generate a candidate whitelist and ask the user to confirm before persisting it
 
-4. 修复分支
-- 自动修复默认关闭
-- 仅对高置信且不影响语义的文本执行自动修复
-- 涉及代码标识符、协议字段、数据库字段名时只给建议不自动改
+4. Fix branch
+- Auto-fix is disabled by default
+- Automatically fix only high-confidence text that does not affect semantics
+- For code identifiers, protocol fields, and database field names, provide suggestions only and do not change them automatically
 
-5. 命名语法分支
-- 默认只检查文档、注释、字符串
-- 若用户启用标识符语法检查，则额外检查变量命名英文语义
-- 布尔变量命名建议: `is/has/can/should` + 过去分词或形容词（如 `isDeleted` 优于 `isDelete`）
+5. Naming grammar branch
+- By default, check only documents, comments, and strings
+- If the user enables identifier grammar checking, additionally check English semantics in variable naming
+- Recommended Boolean variable naming: `is/has/can/should` + past participle or adjective, such as `isDeleted` being preferable to `isDelete`
 
-## 执行流程
+## Execution Flow
 
-1. 解析任务
-- 解析范围、模式、语言和是否自动修复
-- 识别需排除目录（bin、obj、node_modules、生成文件）
+1. Parse the task
+- Parse scope, mode, language, and whether auto-fix is enabled
+- Identify directories to exclude, such as bin, obj, node_modules, and generated files
 
-2. 采集可检查文本
-- 提取 Markdown 正文、代码注释、日志文本、异常消息、用户提示文案
-- 提取代码块与注释中的标点片段，用于标点合理性检查
-- 默认跳过 URL、哈希、GUID、版本号、密钥片段
+2. Collect checkable text
+- Extract Markdown body text, code comments, log text, exception messages, and user-facing prompt copy
+- Extract punctuation fragments from code blocks and comments for punctuation reasonableness checks
+- By default, skip URLs, hashes, GUIDs, version numbers, and secret fragments
 
-3. 运行拼写扫描
-- 优先使用稳定拼写工具（例如 cspell 或 typos）
-- 将项目术语白名单与忽略规则合并后执行扫描
+3. Run spell scanning
+- Prefer stable spell-checking tools, such as cspell or typos
+- Merge project terminology whitelist and ignore rules before running the scan
 
-4. 术语与标点专项检查
-- 使用技术术语词表校验术语拼写（例如 Async、Middleware、Kubernetes）
-- 识别不恰当标点：重复标点（如 `。。`）、全半角混用、注释中与语义冲突的标点组合
+4. Terminology and punctuation special checks
+- Use a technical terminology dictionary to validate term spelling, such as Async, Middleware, and Kubernetes
+- Identify inappropriate punctuation: duplicated punctuation, such as `。。`, mixed full-width/half-width punctuation, and punctuation combinations in comments that conflict with semantics
 
-5. 归一化与去重
-- 合并重复问题，统一词形（大小写、复数、时态）
-- 标注置信度与建议替换词
+5. Normalize and deduplicate
+- Merge duplicate issues and normalize word forms, including casing, pluralization, and tense
+- Mark confidence and suggested replacements
 
-6. 命名语法逻辑检查（可选）
-- 对启用范围内变量名执行英文语法与语义模式检查
-- 重点规则：布尔变量命名、动宾结构、时态一致性
+6. Naming grammar logic check (optional)
+- Run English grammar and semantic pattern checks on variable names in the enabled scope
+- Key rules: Boolean variable naming, verb-object structure, and tense consistency
 
-7. 生成报告
-- 按严重性和可修复性排序
-- 每条问题包含: 文件、行号、问题类型、原词/原命名、建议项、上下文、修复风险
+7. Generate report
+- Sort by severity and fixability
+- Each issue includes: file, line number, issue type, original word/original name, suggestions, context, and fix risk
 
-8. 执行修复（可选）
-- 仅处理高置信低风险项
-- 生成最小化变更补丁
-- 修复后重新扫描，确认问题数量下降且无新增解析错误
+8. Execute fixes (optional)
+- Handle only high-confidence, low-risk items
+- Generate minimal change patches
+- Re-scan after fixing to confirm that issue count decreases and no new parsing errors are introduced
 
-## 输出格式
+## Output Format
 
-必须输出:
-1. 检查范围与排除项
-2. 拼写问题清单（按置信度降序）
-3. 自动修复结果（若启用）
-4. 剩余待人工确认项
-5. 建议加入白名单的项目术语
+Must output:
+1. Check scope and exclusions
+2. Spelling issue list, sorted by confidence descending
+3. Auto-fix results, if enabled
+4. Remaining items requiring manual confirmation
+5. Project terms recommended for whitelist inclusion
 
-建议问题字段:
-- 级别: `High` / `Medium` / `Low`
-- 位置: 文件 + 行号
-- 问题类型: `Spelling` / `Punctuation` / `Terminology` / `NamingGrammar`
-- 原词与建议词
-- 上下文片段
-- 处理建议: 自动修复 / 人工确认 / 加入白名单
+Recommended issue fields:
+- Level: `High` / `Medium` / `Low`
+- Location: file + line number
+- Issue type: `Spelling` / `Punctuation` / `Terminology` / `NamingGrammar`
+- Original word and suggested word
+- Context snippet
+- Handling recommendation: auto-fix / manual confirmation / add to whitelist
 
-## 质量标准（完成定义）
+## Quality Standards (Definition of Done)
 
-- 问题清单中的每条记录都可定位到具体文件与行号
-- 代码块与注释中的标点问题可被识别并分类
-- 技术术语误写可被术语词典识别并给出标准写法
-- 变量命名语法问题（如 `isDelete`）可被识别并给出建议（如 `isDeleted`）
-- 自动修复仅覆盖高置信低风险文本，不改动协议字段和标识符
-- 二次扫描结果应无新增问题，且总问题数明显下降
-- 输出必须包含“待人工确认项”和“建议白名单项”
+- Every record in the issue list can be located to a specific file and line number
+- Punctuation issues in code blocks and comments can be identified and classified
+- Technical terminology mistakes can be identified by the terminology dictionary and given standard spellings
+- Variable naming grammar issues, such as `isDelete`, can be identified and suggestions such as `isDeleted` can be provided
+- Auto-fix covers only high-confidence, low-risk text and does not change protocol fields or identifiers
+- The second scan should introduce no new issues and should show a clear decrease in total issue count
+- Output must include “items requiring manual confirmation” and “recommended whitelist items”
 
-## 失败与回退策略
+## Failure and Fallback Strategy
 
-- 若工具不可用: 给出安装建议并先执行规则化手工扫描（注释/文档优先）
-- 若误报过多: 降级到 quick 模式并扩充术语白名单
-- 若修复后出现异常: 回滚该批次改动，只保留报告与候选补丁
+- If tools are unavailable: provide installation suggestions and first execute a rule-based manual scan, prioritizing comments and documents
+- If there are too many false positives: downgrade to quick mode and expand the terminology whitelist
+- If an exception occurs after fixing: roll back that batch of changes and keep only the report and candidate patch
 
-## 示例调用
+## Example Invocations
 
-- /check-spelling 检查 Spec/ 与 ProjectCustomize/ 的文档拼写，standard 模式，不自动修复
-- /check-spelling 仅检查 Api.Web/Controllers 注释和字符串，strict 模式，输出修复补丁
-- /check-spelling 对最近变更文件做 quick 检查，并生成术语白名单建议
-- /check-spelling 检查 Api.BLL/ 的变量命名语法逻辑，识别 isDelete 类命名并给出替代建议
+- /check-spelling Check document spelling under Spec/ and ProjectCustomize/ in standard mode without auto-fix
+- /check-spelling Check only comments and strings in Api.Web/Controllers in strict mode and output a fix patch
+- /check-spelling Run a quick check on recently changed files and generate terminology whitelist suggestions
+- /check-spelling Check variable naming grammar logic under Api.BLL/, identify isDelete-style names, and provide replacement suggestions
 
 ## 验收清单
 

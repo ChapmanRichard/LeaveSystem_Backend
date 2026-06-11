@@ -1,24 +1,24 @@
 ﻿---
 name: asl-general-implement-rule-general
-description: "Use when: 需要应用 API 实现中的通用规则，包括文档优先、复用优先、可观测性优先。关键词: 通用规则, 文档优先, 复用优先, 可观测性"
+description: "Use when: you need to apply general rules in API implementation, including documentation first, reuse first, and observability first. Keywords: general rules, documentation first, reuse first, observability"
 ---
 
-# 通用规则子 Skill
+# General Rules Sub-Skill
 
-## 意图
-在实现任何接口前，先确保遵循统一的基础规则，减少返工和行为漂移。
+## Intent
+Before implementing any API, ensure unified foundational rules are followed to reduce rework and behavioral drift.
 
-## 输入
-- 需求文档路径（默认 `Spec/Req.md`）
-- API 设计文档路径（默认 `Spec/api_design.md`）
+## Input
+- Requirements document path (default: `Spec/Req.md`)
+- API design document path (default: `Spec/api_design.md`)
 
-## 规则
-- 文档优先: 单一事实来源为 `Req.md` + `api_design.md`，文档与代码冲突时优先遵循文档并记录兼容处理。
-- 复用优先: 先复用已有 Model、DTO、基础设施，只有文档明确需要且现有模型不足时才新增模型或字段。
-- 可观测性优先: 失败原因可定位（错误码/消息），关键业务动作可追踪（必要时审计日志）。
+## Rules
+- Documentation first: the single source of truth is `Req.md` + `api_design.md`. When documentation and code conflict, prefer the documentation and record compatibility handling.
+- Reuse first: first reuse existing Models, DTOs, and infrastructure; add models or fields only when documentation explicitly requires them and existing models are insufficient.
+- Observability first: failure causes must be locatable through error codes/messages, and key business actions must be traceable, with audit logs when necessary.
 
 
-## 最小验证清单
-- [ ] 已核对 `Req.md` 与 `api_design.md`。
-- [ ] 未重复实现已有组件。
-- [ ] 失败路径可通过错误码与日志定位。
+## Minimum Validation Checklist
+- [ ] `Req.md` and `api_design.md` have been checked.
+- [ ] Existing components have not been reimplemented.
+- [ ] Failure paths can be located through error codes and logs.

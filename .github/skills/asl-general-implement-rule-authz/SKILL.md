@@ -1,25 +1,25 @@
 ﻿---
 name: asl-general-implement-rule-authz
-description: "Use when: 需要实现认证与鉴权规则，覆盖接口层和资源层授权。关键词: Authentication, Authorization, RBAC, 最小权限"
+description: "Use when: you need to implement authentication and authorization rules covering both interface-level and resource-level authorization. Keywords: Authentication, Authorization, RBAC, least privilege"
 ---
 
-# 认证与鉴权子 Skill
+# Authentication and Authorization Sub-Skill
 
-## 意图
-确保接口具备认证与授权边界，防止越权访问。
+## Intent
+Ensure APIs have authentication and authorization boundaries to prevent unauthorized access.
 
-## 输入
-- 目标接口
-- 角色矩阵来源（默认 `Req.md`）
+## Input
+- Target interface
+- Role matrix source (default: `Req.md`)
 
-## 规则
-- 接口必须同时满足认证（Authentication）与鉴权（Authorization），不得仅依赖路由可达性判断权限。
-- 采用“最小权限原则（Least Privilege）”与“默认拒绝（Deny by Default）”，未明确授权的访问应被拒绝。
-- 鉴权至少包含两层: 接口层访问控制 + 资源级访问控制（如是否可访问该资源、是否可执行该动作）。
-- 本工程具体角色判定与授权边界按“本工程业务角色约定（来自 Req.md）”执行。
-- 参考标准: OWASP ASVS V4（Access Control）、NIST SP 800-63（Digital Identity）、RFC 9110（HTTP 认证语义）。
+## Rules
+- APIs must satisfy both Authentication and Authorization; do not determine permissions solely by route reachability.
+- Apply the Principle of Least Privilege and Deny by Default; access that is not explicitly authorized should be denied.
+- Authorization must include at least two layers: interface-level access control + resource-level access control, such as whether the resource may be accessed and whether the action may be performed.
+- The project-specific role decisions and authorization boundaries follow the “project business role conventions (from Req.md)”.
+- Reference standards: OWASP ASVS V4 (Access Control), NIST SP 800-63 (Digital Identity), and RFC 9110 (HTTP authentication semantics).
 
-## 最小验证清单
-- [ ] 受保护接口有认证约束。
-- [ ] 已做资源级权限校验。
-- [ ] 未授权请求返回稳定错误响应。
+## Minimum Validation Checklist
+- [ ] Protected APIs have authentication constraints.
+- [ ] Resource-level permission checks have been implemented.
+- [ ] Unauthorized requests return stable error responses.

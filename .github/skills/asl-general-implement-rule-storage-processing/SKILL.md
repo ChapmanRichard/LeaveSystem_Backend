@@ -1,27 +1,27 @@
 ﻿---
 name: asl-general-implement-rule-storage-processing
-description: "Use when: 需要约束数据访问、事务、一致性和查询效率。关键词: 存储处理, 事务, 一致性, 分页, 索引"
+description: "Use when: you need to constrain data access, transactions, consistency, and query efficiency. Keywords: storage processing, transaction, consistency, pagination, indexes"
 ---
 
-# 存储处理规范子 Skill
+# Storage Processing Standards Sub-Skill
 
-## 意图
-确保数据访问安全、事务完整、查询可控。
+## Intent
+Ensure data access is safe, transactions are complete, and queries are controllable.
 
-## 输入
-- 数据访问涉及的实体与仓储
+## Input
+- Entities and repositories involved in data access
 
-## 规则
-- 数据访问守卫: 统一通过 `UnitOfWorkLeaveSystem + LeaveSystemDBRepository<T>` 或受控仓储扩展访问数据，禁止在业务层散落原生 SQL。
-- 事务守卫: 多实体写入、状态流转、额度扣减等原子业务必须运行在事务边界内（复用既有事务装饰器策略），避免部分提交。
-- 一致性守卫: 对并发敏感数据采用乐观并发字段或条件更新，防止“最后写入覆盖”导致业务错乱。
-- 查询守卫: 列表接口分页必须有限制（如 pageSize 上限），避免全表扫描；按访问场景增加必要索引建议。
-- 数据最小化守卫: 只读取和返回业务需要字段，避免过度抓取与敏感字段外泄。
-- 生命周期守卫: 明确软删/硬删策略，删除操作优先可审计、可追踪；历史数据保留策略要与合规要求一致。
-- 参考标准: ACID 事务原则、OWASP ASVS V9（Data Protection）、CWE-770（资源耗尽）。
+## Rules
+- Data access guard: access data uniformly through `UnitOfWorkLeaveSystem + LeaveSystemDBRepository<T>` or controlled repository extensions. Do not scatter raw SQL throughout the business layer.
+- Transaction guard: atomic business operations such as multi-entity writes, state transitions, and quota deduction must run within transaction boundaries, reusing existing transaction decorator strategies to avoid partial commits.
+- Consistency guard: use optimistic concurrency fields or conditional updates for concurrency-sensitive data to prevent “last write wins” overwrites that cause business disorder.
+- Query guard: list APIs must have pagination limits, such as pageSize caps, to avoid full table scans; add necessary index recommendations according to access scenarios.
+- Data minimization guard: read and return only fields required by the business to avoid over-fetching and sensitive field leakage.
+- Lifecycle guard: clarify soft-delete/hard-delete strategy. Delete operations should preferably be auditable and traceable; historical data retention strategies must align with compliance requirements.
+- Reference standards: ACID transaction principles, OWASP ASVS V9 (Data Protection), and CWE-770 (Allocation of Resources Without Limits or Throttling).
 
 
-## 最小验证清单
-- [ ] 数据访问路径符合仓储/UoW 约定。
-- [ ] 关键写入路径有事务保障。
-- [ ] 列表查询有 pageSize 上限。
+## Minimum Validation Checklist
+- [ ] Data access paths comply with Repository/UoW conventions.
+- [ ] Key write paths have transaction guarantees.
+- [ ] List queries have pageSize limits.

@@ -1,23 +1,23 @@
 ﻿---
 name: asl-general-implement-rule-sensitive-data
-description: "Use when: 需要约束敏感信息在代码、配置、日志和错误响应中的处理方式。关键词: 敏感信息, 脱敏, 凭据管理, 信息泄露"
+description: "Use when: you need to constrain how sensitive information is handled in code, configuration, logs, and error responses. Keywords: sensitive information, masking, credential management, information leakage"
 ---
 
-# 敏感信息规范子 Skill
+# Sensitive Information Standards Sub-Skill
 
-## 意图
-防止敏感信息泄露，保证凭据和个人数据处理合规。
+## Intent
+Prevent sensitive information leakage and ensure compliant handling of credentials and personal data.
 
-## 输入
-- 涉及配置、日志、错误响应的改动
+## Input
+- Changes involving configuration, logs, or error responses
 
-## 规则
-- 禁止在代码、日志、注释、示例请求中硬编码或明文输出敏感信息（密码、密钥、Token、连接串、身份证号、手机号、邮箱、银行卡号等）。
-- 配置项优先走环境变量或安全配置中心，禁止提交真实凭据到仓库；示例值必须使用脱敏占位符（如 `***`、`<SECRET>`）。
-- 对外返回错误信息时避免泄露内部细节（SQL、堆栈、路径、框架版本），内部诊断信息仅保留在受控日志。
-- 参考标准: OWASP ASVS、OWASP Logging Cheat Sheet、CWE-200（信息泄露）。
+## Rules
+- Do not hardcode or output sensitive information in plaintext in code, logs, comments, or sample requests, such as passwords, keys, Tokens, connection strings, ID numbers, phone numbers, emails, and bank card numbers.
+- Configuration items should preferably use environment variables or secure configuration centers. Do not commit real credentials to the repository; sample values must use masked placeholders such as `***` or `<SECRET>`.
+- When returning errors externally, avoid leaking internal details such as SQL, stacks, paths, or framework versions. Internal diagnostic information should only remain in controlled logs.
+- Reference standards: OWASP ASVS, OWASP Logging Cheat Sheet, and CWE-200 (Information Exposure).
 
-## 最小验证清单
-- [ ] 无明文密钥/Token/连接串提交。
-- [ ] 示例和日志数据已脱敏。
-- [ ] 错误响应不暴露 SQL、堆栈、路径等内部细节。
+## Minimum Validation Checklist
+- [ ] No plaintext keys/Tokens/connection strings are committed.
+- [ ] Sample and log data are masked.
+- [ ] Error responses do not expose internal details such as SQL, stacks, or paths.

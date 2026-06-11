@@ -1,175 +1,175 @@
 ﻿---
 name: asl-dotnet-implement-api-aspnetcore
-description: "Use when: 需要根据需求文档与 API 设计文档，在当前 工程中实现指定接口（例如 API-E1 创建请假单草稿），并遵循现有分层架构与编码规范，并且验证行业标准<<GBG_Tech_Standards.md>>,项目收货标准<<DOD.md>>。关键词: Req.md, api_design.md, API实现, Controller, CommandHandler, Service, Validator"
+description: "Use when: you need to implement a specified API in the current project according to requirements and API design documents, such as API-E1 create leave request draft, while following the existing layered architecture and coding standards, and verifying the industry standard <<GBG_Tech_Standards.md>> and project acceptance standard <<DOD.md>>. Keywords: Req.md, api_design.md, API implementation, Controller, CommandHandler, Service, Validator"
 ---
 
-# 根据 Req 与 API 设计实现指定接口
+# Implement a Specified API from Req and API Design
 
-## 意图
+## Intent
 
-该 Skill 用于把“文档需求”转化为“可运行代码”，并确保实现过程遵循当前工程既有风格。
+This Skill converts “documented requirements” into “runnable code” while ensuring the implementation follows the current project's existing style.
 
-适用场景:
-- 用户给出某个 API 标识（如 `API-E1`）或路径（如 `POST /leaves`）
-- 已有需求文档与接口设计文档
-- 需要在当前分层架构中落地接口实现
+Applicable scenarios:
+- The user provides an API identifier, such as `API-E1`, or a path, such as `POST /leaves`
+- Requirements documentation and API design documentation already exist
+- The API implementation needs to be delivered within the current layered architecture
 
-目标结果:
-- 按 `Spec/Req.md` 与 `Spec/api_design.md` 精准实现指定 API
-- 优先复用现有 Models/基础设施，避免重复造轮子
-- 给出完整改动与最小可验证结果
+Expected outcomes:
+- Accurately implement the specified API according to `Spec/Req.md` and `Spec/api_design.md`
+- Prefer reusing existing Models/infrastructure to avoid reinventing the wheel
+- Provide complete changes and the smallest verifiable result
 
-## 输入
+## Input
 
-必需输入:
-- 指定接口标识或接口路径（例如: `API-E1 创建请假单(草稿)`）
-- 需求文档路径（默认: `Spec/Req.md`）
-- API 文档路径（默认: `Spec/api_design.md`）
+Required input:
+- Specified API identifier or API path, for example: `API-E1 Create leave request (draft)`
+- Requirements document path (default: `Spec/Req.md`)
+- API document path (default: `Spec/api_design.md`)
 
-可选输入:
-- 是否允许新增实体 Model
-- 返回结构策略: 保持现有 `JsonResultFactory` 风格，或切换到新版统一 `code/message/data`
-- 是否包含最小联调测试样例
+Optional input:
+- Whether adding new entity Models is allowed
+- Response structure strategy: keep the existing `JsonResultFactory` style, or switch to the new unified `code/message/data`
+- Whether to include the smallest joint-debugging test sample
 
-## 本工程架构约定（必须遵循）
+## Project Architecture Conventions (Must Follow)
 
-1. 分层路径约定
-- Web 层: `src/Api.Web/Controllers`
-- Contract 层:
-  - 命令: `src/Api.Contract/Commands`
-  - 查询: `src/Api.Contract/Querie` 或 `src/Api.Contract/Queries`
-  - 模型: `src/Api.Contract/Model`
-  - 服务接口: `src/Api.Contract/ServiceInterfaces`
-- BLL 层:
+1. Layered path conventions
+- Web layer: `src/Api.Web/Controllers`
+- Contract layer:
+  - Commands: `src/Api.Contract/Commands`
+  - Queries: `src/Api.Contract/Querie` or `src/Api.Contract/Queries`
+  - Models: `src/Api.Contract/Model`
+  - Service interfaces: `src/Api.Contract/ServiceInterfaces`
+- BLL layer:
   - CommandHandler: `src/Api.BLL/CommandHandlers`
   - QueryHandler: `src/Api.BLL/QueryHandlers`
   - Validator: `src/Api.BLL/CommandValidators`
   - Service: `src/Api.BLL/Services`
-- DAL 层:
+- DAL layer:
   - `UnitOfWorkLeaveSystem`
   - `LeaveSystemDBRepository<T>`
   - `LeaveSystemDBContext`
 
-2. 执行链路约定
-- Controller 不写业务逻辑
-- 写入类接口优先走 `IWebCommandBus -> ICommandHandler -> Service -> UnitOfWork/Repository`
-- 查询类接口优先走 `IQueryProcessor -> QueryHandler -> Service`
+2. Execution chain conventions
+- Controllers do not contain business logic
+- Write APIs preferably use `IWebCommandBus -> ICommandHandler -> Service -> UnitOfWork/Repository`
+- Query APIs preferably use `IQueryProcessor -> QueryHandler -> Service`
 
-3. DI 与注册约定
-- 处理器/服务通过 `Program.cs` 的 `Scan + Decorate` 自动注册
-- 新增类要保证命名空间在扫描范围中
+3. DI and registration conventions
+- Handlers/services are automatically registered through `Scan + Decorate` in `Program.cs`
+- New classes must ensure their namespaces are within the scan scope
 
-4. 风格与兼容约定
-- 保持最小变更原则，避免无关重构
-- 如果文档响应格式与现有 `JsonResultFactory` 风格冲突，优先保持工程一致，并在输出中说明差异
-- 不修改无关接口行为
+4. Style and compatibility conventions
+- Keep the minimal-change principle and avoid unrelated refactoring
+- If the documented response format conflicts with the existing `JsonResultFactory` style, prefer project consistency and explain the difference in the output
+- Do not modify unrelated API behavior
 
-5. 本工程业务角色约定（来自 Req.md）
-- 角色集合为 Employee、Manager、Admin。
-- Employee 侧重请假单申请与个人数据访问；Manager 侧重审批；Admin 侧重额度管理。
-- 该角色矩阵属于本工程特定业务约束，实现时以 `Req.md` 与 `api_design.md` 为准。
+5. Project business role conventions (from Req.md)
+- The role set is Employee, Manager, and Admin.
+- Employee focuses on leave request applications and personal data access; Manager focuses on approvals; Admin focuses on quota management.
+- This role matrix is a project-specific business constraint. During implementation, use `Req.md` and `api_design.md` as the source of truth.
 
-## 规则
+## Rules
 
-1. 子 Skill清单
-- 全量加载和使用以下最新 Skill 索引（以工作区根目录 `skills/` 为准，而不是本目录下的 `.github/skills/`）:
-  - 通用规则: `skills/asl-general-implement-rule-general/`
-  - 命名规范和风格守卫: `skills/asl-general-implement-rule-naming-style/`
-  - 认证与鉴权: `skills/asl-general-implement-rule-authz/`
-  - 状态机一致性: `skills/asl-general-implement-rule-state-machine/`
-  - 数据校验规则: `skills/asl-general-implement-rule-validation/`
-  - API 契约一致性守卫: `skills/asl-general-implement-rule-api-contract-consistency/`
-  - 服务层处理规范: `skills/asl-general-implement-rule-service-processing/`
-  - 存储处理规范: `skills/asl-general-implement-rule-storage-processing/`
-  - 异常与日志规范: `skills/asl-general-implement-rule-exception-logging/`
-  - 敏感信息规范: `skills/asl-general-implement-rule-sensitive-data/`
-  - 组件引用规范: `skills/asl-general-implement-rule-component-reference/`
-  - 漏洞防范规范: `skills/asl-general-implement-rule-vulnerability-prevention/`
+1. Sub-Skill list
+- Fully load and use the following latest Skill indexes, based on the workspace root `skills/` directory rather than `.github/skills/` under this directory:
+  - General rules: `skills/asl-general-implement-rule-general/`
+  - Naming standards and style guard: `skills/asl-general-implement-rule-naming-style/`
+  - Authentication and authorization: `skills/asl-general-implement-rule-authz/`
+  - State machine consistency: `skills/asl-general-implement-rule-state-machine/`
+  - Data validation rules: `skills/asl-general-implement-rule-validation/`
+  - API contract consistency guard: `skills/asl-general-implement-rule-api-contract-consistency/`
+  - Service-layer processing standards: `skills/asl-general-implement-rule-service-processing/`
+  - Storage processing standards: `skills/asl-general-implement-rule-storage-processing/`
+  - Exception and logging standards: `skills/asl-general-implement-rule-exception-logging/`
+  - Sensitive information standards: `skills/asl-general-implement-rule-sensitive-data/`
+  - Component reference standards: `skills/asl-general-implement-rule-component-reference/`
+  - Vulnerability prevention standards: `skills/asl-general-implement-rule-vulnerability-prevention/`
 
 
-## 工作流
+## Workflow
 
-1. 解析目标接口
-- 在 `api_design.md` 中定位目标条目（如 `API-E1`）
-- 抽取: Method、Path、输入、输出、校验、权限、状态流转
-- 在 `Req.md` 中核对角色权限和业务规则
+1. Parse the target API
+- Locate the target entry in `api_design.md`, such as `API-E1`
+- Extract: Method, Path, input, output, validation, permissions, and state transitions
+- Check role permissions and business rules in `Req.md`
 
-2. 盘点现有代码
-- 检查是否已有同名/同路由 Controller Action
-- 检查 Contract 中是否已有对应 Command/DTO/Model
-- 检查 BLL 中是否已有 Handler/Service/Validator 可复用
+2. Inventory existing code
+- Check whether a Controller Action with the same name/route already exists
+- Check whether corresponding Command/DTO/Model already exists in Contract
+- Check whether reusable Handler/Service/Validator already exists in BLL
 
-3. 设计最小改动方案
-- 明确新增/修改文件清单
-- 决定是否新增 Model 字段和 `DbContext` 映射
-- 决定返回包装（沿用现有或按新规范）
+3. Design the minimal change plan
+- Clarify the list of files to add/modify
+- Decide whether to add Model fields and `DbContext` mappings
+- Decide response wrapping, either existing style or new standard
 
-4. 分层实现
-- Controller: 增加 Action，绑定路由与鉴权
-- Contract: 增加 Command/Query/DTO
-- Validator: 增加输入校验
-- Handler: 编排命令处理
-- Service: 实现核心业务与状态机
-- DAL: 必要时补充实体字段/仓储扩展
+4. Layered implementation
+- Controller: add Action, bind route and authorization
+- Contract: add Command/Query/DTO
+- Validator: add input validation
+- Handler: orchestrate command processing
+- Service: implement core business and state machine
+- DAL: supplement entity fields/repository extensions when necessary
 
-5. 自检与验证
-- 编译检查
-- 路由、权限、状态转换、额度校验逐项验证
-- 给出最小请求/响应样例
-- 检查验证是否符合 `Spec/AccessControl.md`
-- 检查验证是否符合 `DomainKnowledge/GBG_Tech_Standards.md` 与 `ProjectCustomize/DOD.md`
+5. Self-check and validation
+- Compilation check
+- Validate route, permissions, state transitions, and quota checks item by item
+- Provide minimal request/response samples
+- Check whether validation complies with `Spec/AccessControl.md`
+- Check whether validation complies with `DomainKnowledge/GBG_Tech_Standards.md` and `ProjectCustomize/DOD.md`
 
-6. 输出结果
-- 列出改动文件
-- 给出关键实现说明
-- 给出未覆盖风险与后续建议
+6. Output results
+- List changed files
+- Provide key implementation notes
+- Provide uncovered risks and follow-up suggestions
 
-## API-E1 参考实现蓝图（示例）
+## API-E1 Reference Implementation Blueprint (Example)
 
-目标: `API-E1 创建请假单(草稿)`
+Goal: `API-E1 Create leave request (draft)`
 
-建议改动顺序:
-1. Contract 新增命令
-- 在 `Api.Contract/Commands` 新增 `CreateLeaveApplicationCommand : ICommand<string>`
-- 字段: `LeaveType, StartAt, EndAt, Reason, SaveAsDraft`
+Recommended change order:
+1. Add a Contract command
+- Add `CreateLeaveApplicationCommand : ICommand<string>` under `Api.Contract/Commands`
+- Fields: `LeaveType, StartAt, EndAt, Reason, SaveAsDraft`
 
-2. Model 复用或补充
-- 若已有请假实体则复用
-- 若无则新增 `LeaveApplication` 到 `Api.Contract/Model`，并在 `LeaveSystemDBContext` 注册 `DbSet`
+2. Reuse or supplement Model
+- If a leave entity already exists, reuse it
+- If none exists, add `LeaveApplication` to `Api.Contract/Model` and register `DbSet` in `LeaveSystemDBContext`
 
-3. Service 与接口
-- `ILeaveService` 增加 `CreateLeaveApplication(CreateLeaveApplicationCommand cmd)`
-- `LeaveService` 内实现:
-  - 计算 `durationDays`
-  - 校验时间范围与最小 0.5 天
-  - 设置状态 `Draft`
-  - 持久化并返回单号
+3. Service and interface
+- Add `CreateLeaveApplication(CreateLeaveApplicationCommand cmd)` to `ILeaveService`
+- Implement inside `LeaveService`:
+  - Calculate `durationDays`
+  - Validate time range and minimum 0.5 day
+  - Set status to `Draft`
+  - Persist and return request number
 
 4. Validator
-- 新增 `LeaveCommandValidator : IValidator<CreateLeaveApplicationCommand>`
-- 校验必填、长度、时间关系
+- Add `LeaveCommandValidator : IValidator<CreateLeaveApplicationCommand>`
+- Validate required fields, length, and time relationship
 
 5. Handler
-- 新增 `LeaveCommandHandler : ICommandHandler<CreateLeaveApplicationCommand, string>`
-- 仅转发到 Service
+- Add `LeaveCommandHandler : ICommandHandler<CreateLeaveApplicationCommand, string>`
+- Only forward to Service
 
 6. Controller
-- 新增 `LeaveController`
-- 增加 `POST /api/Leave/CreateDraft` 或按团队规则映射文档路由
-- 调用 `CommandBus.SubmitAndReturnJsonResult(command)`
+- Add `LeaveController`
+- Add `POST /api/Leave/CreateDraft` or map the documented route according to team rules
+- Call `CommandBus.SubmitAndReturnJsonResult(command)`
 
-7. 联调样例
-- 输入示例:
+7. Joint-debugging sample
+- Input sample:
 ```json
 {
   "leaveType": "Annual",
   "startAt": "2026-04-10T09:00:00+08:00",
   "endAt": "2026-04-11T18:00:00+08:00",
-  "reason": "家中有事需请假处理，预计两天",
+  "reason": "I need to take leave for family matters, estimated two days",
   "saveAsDraft": true
 }
 ```
-- 输出示例（按现有风格）:
+- Output sample (using existing style):
 ```json
 {
   "RESULT": "TRUE",
@@ -178,73 +178,73 @@ description: "Use when: 需要根据需求文档与 API 设计文档，在当前
 }
 ```
 
-## 参考用例
+## Reference Cases
 
-### 用例 1：实现 API-E1
-提示词示例:
-- "根据 Req.md 和 api_design.md，实现 API-E1 创建请假单(草稿)，并遵循当前项目 CommandBus 分层。"
+### Case 1: Implement API-E1
+Prompt example:
+- "Implement API-E1 Create leave request (draft) according to Req.md and api_design.md, and follow the current project's CommandBus layering."
 
-预期结果:
-- 完成从 Controller 到 Service 的最小闭环
-- 支持草稿创建并返回 ID
+Expected results:
+- Complete the minimal closed loop from Controller to Service
+- Support draft creation and return an ID
 
-### 用例 2：实现 API-M4 审批通过
-提示词示例:
-- "实现 API-M4，经理审批通过，comment 必填。"
+### Case 2: Implement API-M4 approval pass
+Prompt example:
+- "Implement API-M4, manager approval pass, with comment required."
 
-预期结果:
-- 仅 Manager 可调用
-- 状态必须 `Pending`
-- 返回新状态与审批意见
+Expected results:
+- Only Manager can call it
+- Status must be `Pending`
+- Return the new status and approval comment
 
-### 用例 3：实现 API-A2 调整额度
-提示词示例:
-- "实现 API-A2，管理员调整额度，支持 SetTotal/Increase/Decrease。"
+### Case 3: Implement API-A2 quota adjustment
+Prompt example:
+- "Implement API-A2, admin quota adjustment, supporting SetTotal/Increase/Decrease."
 
-预期结果:
-- 权限控制正确
-- 数据计算正确且不可出现负余额
+Expected results:
+- Permission control is correct
+- Data calculation is correct and negative balances cannot occur
 
-## 验证清单
+## Validation Checklist
 
-提交前逐项核对:
+Check each item before submission:
 
-- [ ] 目标 API 与 `api_design.md` 的 Method/Path/输入输出一致。
-- [ ] 认证与鉴权符合 `Req.md` 与 `api_design.md` 的定义（含接口层与资源层）。
-- [ ] 状态机流转规则正确，非法流转已拦截。
-- [ ] 参数校验与业务校验都已覆盖。
-- [ ] Controller 不包含业务核心逻辑。
-- [ ] Command/Handler/Service 调用链可运行。
-- [ ] 新增类已被 DI 扫描机制发现。
-- [ ] 返回结构与项目现有风格一致（或已明确兼容方案）。
-- [ ] 未在代码与日志中泄露敏感信息，示例数据已脱敏。
-- [ ] 组件引用符合分层与 DI 规范，无跨层直连和循环依赖。
-- [ ] 组件引用满足白名单约束，未触发黑名单违规模式。
-- [ ] 已覆盖常见安全风险（注入、越权、XSS、信息泄露、并发重复提交）。
-- [ ] 命名与风格符合本工程约定，且未引入无关重构噪声。
-- [ ] API 契约与 `api_design.md` 一致，若存在偏差已记录兼容说明。
-- [ ] 异常分层与日志记录符合规范，日志不包含敏感信息且可追踪。
-- [ ] 存储处理符合规范（事务、一致性、分页限制、数据最小化、删除策略）。
-- [ ] 至少提供 1 组成功与 1 组失败请求样例。
-- [ ] 编译通过；无无关文件改动。
+- [ ] The target API is consistent with the Method/Path/input/output in `api_design.md`.
+- [ ] Authentication and authorization comply with definitions in `Req.md` and `api_design.md`, including interface layer and resource layer.
+- [ ] State machine transition rules are correct, and illegal transitions are blocked.
+- [ ] Parameter validation and business validation are both covered.
+- [ ] Controller does not contain core business logic.
+- [ ] Command/Handler/Service call chain is runnable.
+- [ ] Newly added classes are discoverable by the DI scanning mechanism.
+- [ ] Response structure is consistent with the project's existing style, or a compatibility solution is explicitly stated.
+- [ ] No sensitive information is leaked in code or logs, and sample data is masked.
+- [ ] Component references comply with layered and DI standards, with no cross-layer direct connections or circular dependencies.
+- [ ] Component references satisfy whitelist constraints and do not trigger blacklisted violation patterns.
+- [ ] Common security risks are covered, including injection, unauthorized access, XSS, information leakage, and concurrent duplicate submission.
+- [ ] Naming and style comply with project conventions, and no unrelated refactoring noise is introduced.
+- [ ] API contract is consistent with `api_design.md`; if deviations exist, compatibility notes are recorded.
+- [ ] Exception layering and logging comply with standards; logs contain no sensitive information and are traceable.
+- [ ] Storage processing complies with standards, including transactions, consistency, pagination limits, data minimization, and deletion strategy.
+- [ ] At least one success and one failure request sample are provided.
+- [ ] Compilation passes; no unrelated file changes.
 
-## 输出模板
+## Output Template
 
-运行本 Skill 时，按以下结构输出:
+When running this Skill, output using the following structure:
 
-1. 实现范围
-- 接口标识、文档来源、采用的返回规范
+1. Implementation scope
+- Interface identifier, document sources, adopted response standard
 
-2. 改动文件
-- 精确路径列表（新增/修改）
+2. Changed files
+- Exact path list (added/modified)
 
-3. 核心实现说明
-- 权限、状态机、校验、持久化、返回值
+3. Core implementation notes
+- Permissions, state machine, validation, persistence, return values
 
-4. 验证结果
-- 编译结果
-- 示例请求/响应
+4. Validation results
+- Compilation result
+- Sample request/response
 
-5. 风险与后续
-- 尚未覆盖的边界场景
-- 下一步建议
+5. Risks and follow-up
+- Boundary scenarios not yet covered
+- Next-step recommendations

@@ -1,25 +1,25 @@
 ﻿---
 name: asl-general-implement-rule-naming-style
-description: "Use when: 需要约束 API 实现中的命名规范与代码风格一致性。关键词: 命名规范, 代码风格, 可读性, 一致性"
+description: "Use when: you need to constrain naming standards and code style consistency in API implementation. Keywords: naming standards, code style, readability, consistency"
 ---
 
-# 命名规范和风格守卫子 Skill
+# Naming Standards and Style Guard Sub-Skill
 
-## 意图
-确保新增代码命名清晰、风格一致、改动最小化。
+## Intent
+Ensure new code has clear naming, consistent style, and minimized changes.
 
-## 输入
-- 目标改动文件列表
+## Input
+- Target changed file list
 
-## 规则
-- 本工程命名基线: Controller 以 `Controller` 结尾，Command 以 `Command` 结尾，Query 以 `Query` 结尾，Handler 以 `CommandHandler/QueryHandler` 结尾，Service 接口以 `I` 前缀命名并与实现同名配对。
-- API 动作命名遵循“动词+业务对象”，例如 `CreateLeaveApplication`、`ApproveLeave`；避免模糊缩写和无业务语义命名。
-- C# 风格守卫: 类型/成员使用 PascalCase，局部变量 camelCase，私有只读字段使用 `_camelCase`（历史代码存在差异时，新增代码保持局部一致并在同文件内统一）。
-- 单一职责守卫: Controller 仅处理路由/鉴权/协议转换，不落业务规则；复杂流程下沉至 Service。
-- 变更最小化守卫: 不做无关重命名与大规模格式化，确保 diff 聚焦目标 API。
-- 参考标准: .NET Runtime Coding Style、Microsoft C# Coding Conventions、Clean Code 命名可读性原则。
+## Rules
+- Project naming baseline: Controllers end with `Controller`; Commands end with `Command`; Queries end with `Query`; Handlers end with `CommandHandler/QueryHandler`; Service interfaces are prefixed with `I` and paired with implementations of the same name.
+- API action naming follows “verb + business object”, such as `CreateLeaveApplication` and `ApproveLeave`; avoid vague abbreviations and names without business semantics.
+- C# style guard: types/members use PascalCase, local variables use camelCase, private readonly fields use `_camelCase`. When historical code differs, keep new code locally consistent and unified within the same file.
+- Single responsibility guard: Controllers only handle routing/authorization/protocol conversion and do not host business rules; complex flows are moved down to Services.
+- Change minimization guard: do not perform unrelated renames or large-scale formatting; ensure the diff focuses on the target API.
+- Reference standards: .NET Runtime Coding Style, Microsoft C# Coding Conventions, and Clean Code naming readability principles.
 
-## 最小验证清单
-- [ ] 新增符号命名符合项目约定。
-- [ ] 未引入无关重命名或大面积格式化。
-- [ ] 关键动作命名可直接理解业务含义。
+## Minimum Validation Checklist
+- [ ] New symbol names comply with project conventions.
+- [ ] No unrelated renames or large-scale formatting were introduced.
+- [ ] Key action names directly communicate business meaning.

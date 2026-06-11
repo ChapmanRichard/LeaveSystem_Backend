@@ -1,26 +1,26 @@
 ﻿---
 name: asl-general-implement-rule-api-contract-consistency
-description: "Use when: 需要保证接口实现与 API 设计文档在方法、路径、字段和错误码上的一致性。关键词: API 契约, 一致性, OpenAPI, 兼容性"
+description: "Use when: you need to ensure consistency between API implementation and API design documentation in methods, paths, fields, and error codes. Keywords: API contract, consistency, OpenAPI, compatibility"
 ---
 
-# API 契约一致性守卫子 Skill
+# API Contract Consistency Guard Sub-Skill
 
-## 意图
-确保实现与 API 契约对齐，并控制向后兼容风险。
+## Intent
+Ensure the implementation aligns with the API contract and control backward compatibility risks.
 
-## 输入
-- API 设计文档路径（默认 `Spec/api_design.md`）
-- 目标接口标识
+## Input
+- API design document path (default: `Spec/api_design.md`)
+- Target interface identifier
 
-## 规则
-- 契约源守卫: 实现必须与 `api_design.md` 的 Method、Path、请求字段、响应结构、错误码对齐；若因历史兼容无法完全对齐，需在输出中记录偏差与迁移建议。
-- 字段语义守卫: 请求/响应字段命名、可空性、枚举值范围、默认值语义必须一致，禁止“字段同名不同义”。
-- 版本兼容守卫: 已发布接口避免破坏性变更（字段删除、类型收窄、语义反转）；必要时采用向后兼容策略（新增可选字段、保留旧字段过渡）。
-- 状态机契约守卫: 状态流转与错误码必须稳定，前端依赖的关键码值不可随意更改。
-- 示例一致性守卫: 文档中的示例请求响应应可被当前实现复现，至少保证一组成功和一组失败样例可跑通。
-- 参考标准: OpenAPI Specification、RFC 9110（HTTP Semantics）、Postel 原则（在输入上稳健、在输出上保守）。
+## Rules
+- Contract source guard: the implementation must align with the Method, Path, request fields, response structure, and error codes in `api_design.md`. If full alignment is impossible because of historical compatibility, record deviations and migration recommendations in the output.
+- Field semantics guard: request/response field names, nullability, enum value ranges, and default-value semantics must be consistent. Do not allow “same field name with different meanings”.
+- Version compatibility guard: avoid breaking changes to published APIs, such as field deletion, type narrowing, or semantic inversion. When necessary, use backward-compatible strategies such as adding optional fields or keeping old fields during transition.
+- State-machine contract guard: state transitions and error codes must be stable; key code values depended on by the frontend must not be changed casually.
+- Example consistency guard: sample requests and responses in the documentation should be reproducible by the current implementation. At least one success sample and one failure sample must run successfully.
+- Reference standards: OpenAPI Specification, RFC 9110 (HTTP Semantics), and Postel's Law (be liberal in what you accept and conservative in what you send).
 
-## 最小验证清单
-- [ ] 实现与文档逐项对齐。
-- [ ] 契约偏差已记录并给出迁移建议。
-- [ ] 示例请求/响应可复现。
+## Minimum Validation Checklist
+- [ ] Implementation and documentation are aligned item by item.
+- [ ] Contract deviations are recorded with migration recommendations.
+- [ ] Sample requests/responses are reproducible.
