@@ -1,219 +1,219 @@
 ---
 name: asl-dotnet-generate-webapi-tests
-description: "Use when: 需要根据现有 WebAPI 代码与需求文档自动生成单元测试、接口测试或数据库集成测试，重点覆盖 API 契约、Mock 规范、数据库状态清理与可重复执行。关键词: WebAPI, 单元测试, 集成测试, Mock, API契约, Database-State-Cleanup, Req.md"
+description: "Use when: you need to automatically generate unit tests, API tests, or database integration tests from existing WebAPI code and requirements documents, focusing on API contracts, Mock standards, database state cleanup, and repeatable execution. Keywords: WebAPI, unit tests, integration tests, Mock, API contract, Database-State-Cleanup, Req.md"
 ---
 
-# WebAPI 测试生成 Skill
+# WebAPI Test Generation Skill
 
-## 意图
+## Intent
 
-该 Skill 用于把现有 WebAPI 代码、需求文档和分层实现，转化为可执行、可维护、可重复运行的测试代码。
+This Skill converts existing WebAPI code, requirements documents, and layered implementations into executable, maintainable, and repeatable test code.
 
-适用场景:
-- 需要根据现有 WebAPI 自动生成单元测试、控制器测试、服务测试或数据库集成测试
-- 需要围绕需求文档核对接口行为，但不希望测试逻辑绑定到某一份具体需求编号或某一个固定 API
-- 需要补齐测试规范、Mock 规范、契约校验和数据库状态清理策略
+Applicable scenarios:
+- Need to automatically generate unit tests, controller tests, service tests, or database integration tests from existing WebAPI code
+- Need to verify interface behavior against requirements documents without binding test logic to one specific requirement number or fixed API
+- Need to complete testing standards, Mock standards, contract validation, and database state cleanup strategy
 
-目标结果:
-- 基于现有代码结构生成高价值测试，而不是只做表层断言
-- 优先覆盖业务规则、API 契约、异常路径和数据隔离
-- 生成的测试可重复运行，不依赖执行顺序，不污染数据库状态
+Expected outcomes:
+- Generate high-value tests based on existing code structure, rather than only superficial assertions
+- Prioritize coverage of business rules, API contracts, exception paths, and data isolation
+- Generated tests are repeatable, do not depend on execution order, and do not contaminate database state
 
-## 输入
+## Input
 
-必需输入:
-- 需求文档路径或约定文档路径，例如 `Spec/Req.md`
-- 目标 WebAPI 代码范围，例如某个 Controller、Service、QueryHandler、CommandHandler 或 Repository
+Required input:
+- Requirements document path or conventional document path, such as `Spec/Req.md`
+- Target WebAPI code scope, such as a Controller, Service, QueryHandler, CommandHandler, or Repository
 
-可选输入:
-- 目标测试类型: `unit`、`controller`、`integration` 或混合模式
-- 期望测试框架: 如果仓库已有既定框架则沿用；如果没有，则按仓库现状选择最小可行方案
-- 是否允许新增测试项目、测试工具包和测试夹具
-- 是否需要数据库集成测试及清理策略
+Optional input:
+- Target test type: `unit`, `controller`, `integration`, or mixed mode
+- Expected test framework: reuse the repository's established framework if it exists; otherwise choose the minimum viable option according to current repository state
+- Whether adding a test project, test toolkit, and test fixtures is allowed
+- Whether database integration tests and cleanup strategy are required
 
-## 规则
+## Rules
 
-1. 基础测试规范
-- 每个测试只验证一个主要行为，避免一个测试覆盖过多分支。
-- 测试名称必须表达场景、条件和结果，便于定位失败原因。
-- 断言优先检查业务结果、状态变化和调用约束，不做无意义的实现细节断言。
-- 测试必须可重复执行，禁止依赖执行顺序、全局静态状态或随机值。
-- 所有时间、随机数、ID、外部响应都要可控或可替换。
-- 测试数据应尽量最小化，只保留触发目标行为所需字段。
+1. Basic testing standards
+- Each test verifies only one primary behavior and avoids covering too many branches in one test.
+- Test names must express scenario, condition, and result so failures can be located easily.
+- Assertions should preferably check business results, state changes, and call constraints rather than meaningless implementation details.
+- Tests must be repeatable; do not depend on execution order, global static state, or random values.
+- All time, random numbers, IDs, and external responses must be controllable or replaceable.
+- Test data should be minimized and keep only fields required to trigger the target behavior.
 
-2. Web API 专项规则
-- 优先验证路由、HTTP Method、输入绑定、响应结构、状态码和错误码。
-- 对 Header、Query、Route、Body 的组合约束要分别覆盖。
-- 对授权、角色、资源归属、幂等性和状态流转要覆盖成功与失败路径。
-- 对 Controller 的测试重点是契约和编排，不把核心业务逻辑塞进 Controller 断言。
-- 对返回值的断言要区分成功响应、业务错误、校验错误和系统异常。
+2. Web API specific rules
+- Prefer validating routes, HTTP Method, input binding, response structure, status codes, and error codes.
+- Cover combination constraints for Header, Query, Route, and Body separately.
+- Cover success and failure paths for authorization, roles, resource ownership, idempotency, and state transitions.
+- Controller tests focus on contract and orchestration and do not put core business logic into Controller assertions.
+- Assertions for return values must distinguish successful responses, business errors, validation errors, and system exceptions.
 
-3. API 契约验证守卫
-- 测试生成时必须核对现有 WebAPI 的 method、path、请求字段、响应字段、状态码与错误码。
-- 如果需求文档和现有代码存在偏差，测试应明确标识兼容行为，而不是默认忽略。
-- 只要契约中定义了字段类型、必填、枚举、范围、格式或默认值，就要生成对应测试。
-- 对分页、排序、筛选、搜索、批量操作等接口，要覆盖边界值和非法值。
+3. API contract validation guard
+- During test generation, current WebAPI method, path, request fields, response fields, status codes, and error codes must be checked.
+- If requirements documents and existing code differ, tests should explicitly identify compatible behavior rather than ignoring it by default.
+- Whenever the contract defines field type, requiredness, enum, range, format, or default value, corresponding tests must be generated.
+- For pagination, sorting, filtering, search, batch operations, and similar APIs, cover boundary values and illegal values.
 
-4. 外部服务集成 Mock 规范
-- 所有外部依赖都必须隔离，禁止在单元测试中访问真实网络、消息队列、第三方 API 或共享外部系统。
-- 优先 Mock 接口、适配器、HttpClient 包装器或端口抽象，不直接 Mock 业务核心类。
-- Mock 只模拟行为，不把测试写成实现复制品。
-- 对外部依赖要显式验证交互次数、关键入参和失败分支。
-- 当外部依赖返回错误、超时或空结果时，要有单独测试覆盖。
-- 为新功能生成测试时，严禁直接 Mock 旧系统的复杂业务类，必须先提取接口或适配器，然后 Mock 这些适配器
+4. External service integration Mock standards
+- All external dependencies must be isolated. Unit tests must not access real networks, message queues, third-party APIs, or shared external systems.
+- Prefer mocking interfaces, adapters, HttpClient wrappers, or port abstractions; do not directly mock business core classes.
+- Mocks simulate behavior only and must not turn tests into implementation copies.
+- Explicitly verify interaction counts, key arguments, and failure branches for external dependencies.
+- When an external dependency returns errors, timeouts, or empty results, cover each with separate tests.
+- When generating tests for new features, directly mocking complex business classes from legacy systems is strictly prohibited. Extract interfaces or adapters first, then mock those adapters.
 
-5. 数据库集成测试状态清理 (Database-State-Cleanup)
-- 数据库集成测试必须具备明确的前置初始化和后置清理。
-- 每个测试运行前应确保数据隔离，运行后应恢复到干净状态。
-- 可以采用事务回滚、测试专用数据库、按表清理、按前缀清理或 fixture 重建，但必须有明确规则。
-- 禁止多个测试共享会互相污染的持久化数据。
-- 对自增主键、唯一索引、外键和软删除字段要考虑清理后的再次执行兼容性。
-- 如果测试依赖种子数据，种子数据必须显式声明并可重建。
-- （非必选，限于旧系统Enhancement）测试前缀必须包含 Enhancement_2026_ 标识，且清理逻辑必须采用“基于前缀的局部清理”而非物理全量清理
+5. Database integration test state cleanup (Database-State-Cleanup)
+- Database integration tests must have clear pre-initialization and post-cleanup.
+- Before each test run, data isolation should be ensured; after each run, state should be restored to clean.
+- Transaction rollback, test-specific databases, table-by-table cleanup, prefix-based cleanup, or fixture rebuild may be used, but rules must be explicit.
+- Multiple tests must not share persistent data that can contaminate each other.
+- For auto-increment primary keys, unique indexes, foreign keys, and soft-delete fields, compatibility with repeated execution after cleanup must be considered.
+- If tests depend on seed data, seed data must be explicitly declared and rebuildable.
+- For legacy system Enhancements only, the test prefix must include the Enhancement_2026_ marker, and cleanup logic must use “prefix-based local cleanup” rather than physical full cleanup.
 
-6. 其他补充规则
-- 优先测试公开行为，不把测试绑定到私有实现细节。
-- 对异常消息的断言应稳定且有意义，避免依赖易变文本的全部内容。
-- 对日志、审计和敏感信息只验证存在性与脱敏原则，不输出真实敏感值。
-- 不为了提高覆盖率而增加脆弱测试；低价值测试应被拒绝。
-- 如果目标代码已经有重复测试，优先补缺失场景而不是复制现有断言。
+6. Other supplementary rules
+- Prefer testing public behavior and do not bind tests to private implementation details.
+- Assertions on exception messages should be stable and meaningful; avoid depending on the full content of volatile text.
+- For logs, audit, and sensitive information, verify only existence and masking principles; do not output real sensitive values.
+- Do not add fragile tests just to improve coverage; low-value tests should be rejected.
+- If duplicate tests already exist for the target code, prefer completing missing scenarios rather than copying existing assertions.
 
-7. 覆盖率
-- 对目标测试范围，生成后的单元测试代码应以达到 90% 以上覆盖率为明确目标。
-- 覆盖率优先级顺序为: 关键业务分支、异常分支、边界分支、次要分支，不能为了追数字而牺牲断言质量。
+7. Coverage
+- For the target test scope, generated unit test code should have an explicit goal of reaching more than 90% coverage.
+- Coverage priority order is: critical business branches, exception branches, boundary branches, secondary branches. Do not sacrifice assertion quality to chase numbers.
 
-8. 边界测试
-- 必须覆盖最小值、最大值、临界值、空值、默认值和格式边界。
-- 对分页、数量、金额、日期、字符串长度、枚举、状态码、权限角色等输入，至少检查一组合法边界和一组非法边界。
-- 边界测试要明确说明边界属于契约边界、业务边界还是数据边界。
-- 如果某个边界会触发不同的实现路径，应拆成独立测试，避免混在同一个用例里。
+8. Boundary tests
+- Must cover minimum values, maximum values, critical values, null values, default values, and format boundaries.
+- For inputs such as pagination, quantity, amount, date, string length, enum, status code, and permission role, check at least one valid boundary and one invalid boundary.
+- Boundary tests must explicitly state whether the boundary is a contract boundary, business boundary, or data boundary.
+- If a boundary triggers a different implementation path, split it into an independent test and avoid mixing it into the same case.
 
-9. 异常情况测试
-- 每个核心行为都应至少补一组异常测试，覆盖参数异常、状态异常、权限异常和依赖异常。
-- 异常测试要验证错误码、状态码、错误字段或异常类型，而不是只验证“抛异常”本身。
-- 对外部依赖失败、数据库失败、并发冲突、空结果和超时要分别测试。
-- 对预期异常要检查恢复行为或副作用是否符合预期，避免只验证抛出而忽略后续污染。
+9. Exception scenario tests
+- Every core behavior should include at least one exception test group, covering parameter exceptions, state exceptions, permission exceptions, and dependency exceptions.
+- Exception tests must validate error codes, status codes, error fields, or exception types rather than only verifying “throws exception”.
+- External dependency failure, database failure, concurrency conflict, empty result, and timeout must be tested separately.
+- For expected exceptions, check whether recovery behavior or side effects meet expectations; avoid only verifying thrown exceptions while ignoring later contamination.
 
-## 工作流
+## Workflow
 
-1. 识别目标范围
-- 解析需求文档中与目标接口或业务场景相关的约束。
-- 定位对应的 WebAPI 入口、服务层方法、查询处理器、命令处理器或仓储方法。
-- 判断应生成哪类测试: 单元、Controller 契约测试、集成测试，或组合测试。
+1. Identify target scope
+- Parse constraints related to the target API or business scenario from the requirements document.
+- Locate the corresponding WebAPI entry point, service-layer method, query handler, command handler, or repository method.
+- Determine which test types should be generated: unit, Controller contract test, integration test, or a combination.
 
-2. 梳理依赖边界
-- 列出被测对象直接依赖的外部接口、数据库访问、时间源、配置和消息组件。
-- 标记哪些依赖需要 Mock，哪些依赖需要真实运行，哪些依赖需要测试替身。
-- 找出最稳定的测试切入点，优先从公共行为最集中的入口生成测试。
+2. Clarify dependency boundaries
+- List direct dependencies of the system under test, including external interfaces, database access, time sources, configuration, and messaging components.
+- Mark which dependencies need Mocks, which need real execution, and which need test doubles.
+- Find the most stable test entry point and prefer generating tests from the entry point where public behavior is most concentrated.
 
-3. 设计测试矩阵
-- 为每个目标行为设计成功路径、校验失败、状态冲突、权限失败和外部依赖失败用例。
-- 对 API 契约类测试补齐 Method、Path、Header、Body、StatusCode、ErrorCode、Schema 的断言。
-- 对数据库集成测试补齐初始化、执行和清理三个阶段。
+3. Design the test matrix
+- Design success path, validation failure, state conflict, permission failure, and external dependency failure cases for each target behavior.
+- Complete assertions for Method, Path, Header, Body, StatusCode, ErrorCode, and Schema for API contract tests.
+- Complete the three phases of initialization, execution, and cleanup for database integration tests.
 
-4. 生成测试代码
-- 按仓库既有测试框架、命名风格和目录结构创建或补充测试文件。
-- 提取公共 fixture、builder、helper、fake 或 mock 配置，避免重复堆砌。
-- 尽量复用现有测试基础设施，如测试基类、数据构造器、内存数据库、工厂方法等。
+4. Generate test code
+- Create or supplement test files according to the repository's existing test framework, naming style, and directory structure.
+- Extract common fixtures, builders, helpers, fakes, or mock configurations to avoid repeated piles of setup code.
+- Reuse existing test infrastructure as much as possible, such as test base classes, data builders, in-memory databases, factory methods, and so on.
 
-5. 校验与收敛
-- 检查测试是否独立、稳定、可读、可维护。
-- 检查是否遗漏关键契约、边界值、异常路径和清理逻辑。
-- 如果测试会引入脆弱性，应回退到更稳健的断言方式。
+5. Validate and converge
+- Check whether tests are independent, stable, readable, and maintainable.
+- Check whether key contracts, boundary values, exception paths, and cleanup logic are missing.
+- If tests introduce brittleness, roll back to a more robust assertion style.
 
-6. 输出结果
-- 列出新增或修改的测试文件。
-- 简述每组测试覆盖的行为和依赖边界。
-- 明确说明数据库清理策略和 Mock 边界。
+6. Output results
+- List added or modified test files.
+- Briefly describe the behavior and dependency boundaries covered by each test group.
+- Clearly state database cleanup strategy and Mock boundaries.
 
-## 参考用例
+## Reference Cases
 
-### 用例 1：控制器契约测试
-目标: 为某个 WebAPI Controller 生成测试，验证路由、参数绑定和响应结构。
+### Case 1: Controller contract tests
+Goal: generate tests for a WebAPI Controller and verify routes, parameter binding, and response structure.
 
-适用对象示例:
-- `LeaveController` 的创建、编辑、提交、取消、查询类动作
-- 任何类似 `BaseController` 的 API 门面层
+Example targets:
+- Create, edit, submit, cancel, and query actions of `LeaveController`
+- Any API facade layer similar to `BaseController`
 
-建议覆盖:
-- 正常请求返回 `200` 或约定状态码
-- 缺少必填 Header、Query 或 Body 时返回校验错误
-- 路由参数格式非法时返回路由或校验错误
-- 返回体字段名、层级和错误码符合契约
+Recommended coverage:
+- Normal request returns `200` or the agreed status code
+- Missing required Header, Query, or Body returns validation error
+- Invalid route parameter format returns route or validation error
+- Response body field names, hierarchy, and error codes comply with contract
 
-### 用例 2：服务层业务测试
-目标: 为业务服务生成测试，验证状态流转、计算逻辑和异常语义。
+### Case 2: Service-layer business tests
+Goal: generate tests for business services and verify state transitions, calculation logic, and exception semantics.
 
-适用对象示例:
-- `LeaveService` 这类直接编排状态、额度、归属关系和持久化的服务
+Example targets:
+- Services such as `LeaveService` that directly orchestrate state, quota, ownership relationships, and persistence
 
-建议覆盖:
-- 草稿创建、编辑、提交、撤销等状态变更
-- 不合法状态流转被拦截
-- 额度或权限不足时抛出明确业务异常
-- 持久化调用发生在正确时机且入参正确
+Recommended coverage:
+- State changes such as draft creation, edit, submit, and revoke
+- Illegal state transitions are blocked
+- Clear business exceptions are thrown when quota or permission is insufficient
+- Persistence calls occur at the correct time and with correct arguments
 
-### 用例 3：数据库集成测试
-目标: 为 Repository、UnitOfWork 或跨表查询生成真实数据库测试，并保证状态清理。
+### Case 3: Database integration tests
+Goal: generate real database tests for Repository, UnitOfWork, or cross-table queries, and ensure state cleanup.
 
-适用对象示例:
-- `UnitOfWork` + `Repository` 链路
-- 依赖实体关系、查询排序、分页或过滤逻辑的方法
+Example targets:
+- `UnitOfWork` + `Repository` chain
+- Methods depending on entity relationships, query sorting, pagination, or filtering logic
 
-建议覆盖:
-- 写入后可正确查询
-- 关联导航属性和投影正确
-- 分页、排序和过滤在真实数据库中一致
-- 每个测试结束后数据库恢复干净状态，重复执行结果一致
+Recommended coverage:
+- Data can be correctly queried after writing
+- Relationship navigation properties and projections are correct
+- Pagination, sorting, and filtering are consistent in the real database
+- Database is restored to a clean state after each test, and repeated executions produce consistent results
 
-## 生成策略模板
+## Generation Strategy Template
 
-当输入的是一个 WebAPI 入口时，优先按下面顺序生成测试:
-1. 契约测试: 验证方法、路径、状态码、错误码和响应结构
-2. 业务单测: 验证核心规则、状态流转和计算逻辑
-3. 集成测试: 验证数据库、仓储和真实组合行为
+When the input is a WebAPI entry point, generate tests preferably in the following order:
+1. Contract tests: verify method, path, status code, error code, and response structure
+2. Business unit tests: verify core rules, state transitions, and calculation logic
+3. Integration tests: verify database, repository, and real combined behavior
 
-当输入的是一个服务类时，优先按下面顺序生成测试:
-1. 规则单测: 输入校验、状态机、权限、边界值
-2. 依赖交互测试: 验证仓储或外部依赖调用
-3. 集成测试: 仅在确有数据库行为或跨组件行为时生成
+When the input is a service class, generate tests preferably in the following order:
+1. Rule unit tests: input validation, state machine, permissions, boundary values
+2. Dependency interaction tests: verify repository or external dependency calls
+3. Integration tests: generate only when there is real database behavior or cross-component behavior
 
-## 验证清单
+## Validation Checklist
 
-提交前逐项核对:
+Check each item before submission:
 
-- [ ] 已根据需求文档和现有 WebAPI 代码定位测试范围。
-- [ ] 测试类型选择正确，没有把契约测试、单元测试和集成测试混在一起。
-- [ ] 关键 API 契约已覆盖 method、path、输入、输出、状态码和错误码。
-- [ ] 业务规则、状态流转、权限和边界条件已覆盖。
-- [ ] 外部依赖都已隔离，未访问真实网络或共享外部系统。
-- [ ] Mock 边界清晰，没有把测试写成实现复制品。
-- [ ] 数据库集成测试具备明确的初始化与清理策略。
-- [ ] Database-State-Cleanup 已验证可重复执行。
-- [ ] 测试名称清晰，失败时能快速定位原因。
-- [ ] 测试相互独立，不依赖执行顺序。
-- [ ] 未引入脆弱断言、硬编码时间或随机值。
-- [ ] 未修改无关业务代码或引入多余重构。
-- [ ] 生成结果与仓库现有测试框架、命名和目录结构一致。
+- [ ] Test scope has been located according to the requirements document and existing WebAPI code.
+- [ ] Test type selection is correct, without mixing contract tests, unit tests, and integration tests together.
+- [ ] Key API contracts cover method, path, input, output, status code, and error code.
+- [ ] Business rules, state transitions, permissions, and boundary conditions are covered.
+- [ ] All external dependencies are isolated; no real networks or shared external systems are accessed.
+- [ ] Mock boundaries are clear and tests are not implementation copies.
+- [ ] Database integration tests have a clear initialization and cleanup strategy.
+- [ ] Database-State-Cleanup has been verified as repeatable.
+- [ ] Test names are clear and can quickly locate failure causes.
+- [ ] Tests are independent and do not depend on execution order.
+- [ ] No brittle assertions, hardcoded time, or random values are introduced.
+- [ ] No unrelated business code was modified and no unnecessary refactoring was introduced.
+- [ ] Generated results are consistent with the repository's existing test framework, naming, and directory structure.
 
-## 输出模板
+## Output Template
 
-运行本 Skill 时，按以下结构输出:
+When running this Skill, output using the following structure:
 
-1. 测试范围
-- 目标代码范围、需求来源、测试类型
+1. Test scope
+- Target code scope, requirements source, test type
 
-2. 生成结果
-- 新增或修改的测试文件
-- 使用的 Mock、Fixture、TestData 和清理策略
+2. Generation results
+- Added or modified test files
+- Used Mocks, Fixtures, TestData, and cleanup strategy
 
-3. 覆盖说明
-- 覆盖了哪些 API 契约、业务规则、异常路径和数据库行为
+3. Coverage notes
+- Which API contracts, business rules, exception paths, and database behaviors are covered
 
-4. 风险与限制
-- 尚未覆盖的边界场景
-- 需要真实环境才能验证的部分
+4. Risks and limitations
+- Boundary scenarios not yet covered
+- Parts that require a real environment for validation
 
-5. 验证结果
-- 编译或测试执行结果
-- 数据库清理是否通过重复运行验证
+5. Validation results
+- Compilation or test execution results
+- Whether database cleanup passed repeated-run validation

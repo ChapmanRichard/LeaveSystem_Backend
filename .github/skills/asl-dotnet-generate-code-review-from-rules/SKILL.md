@@ -1,216 +1,216 @@
 ---
 name: asl-dotnet-generate-code-review-from-rules
-description: "Use when: 需要根据用户指定的代码范围执行结构化 Code Review，并组合12条治理规则进行漏洞识别、自动修复与分级建议输出，同时检查可读性和潜在Bug。关键词: Code Review, 安全审查, 规则组合, 自动修复, 严重性分级, 可读性, 潜在Bug"
+description: "Use when: you need to perform a structured Code Review on a user-specified code scope, combine 12 governance rules for vulnerability identification, automatic fixes, and severity-based recommendation output, while also checking readability and potential bugs. Keywords: Code Review, security review, rule combination, automatic fix, severity classification, readability, potential bugs"
 ---
 
-# 组合式 Code Review Skill
+# Composable Code Review Skill
 
-## 意图
+## Intent
 
-该 Skill 用于将“用户指定代码范围”转化为可执行、可复核、可复用的 Code Review 流程。
+This Skill converts a “user-specified code scope” into an executable, reviewable, and reusable Code Review workflow.
 
-适用场景:
-- 需要对一个或多个目录、模块、文件进行快速但高质量的 Code Review
-- 需要在同一轮审查中同时覆盖安全、契约、鉴权、校验、状态机、存储与日志等治理要求
-- 需要输出按严重级别分组、理由充分、可落地修复建议明确的审查报告
-- 需要在识别高危漏洞后尝试自动修复，并给出修复结果与剩余风险
+Applicable scenarios:
+- Need to perform a fast but high-quality Code Review on one or more directories, modules, or files
+- Need to cover governance requirements such as security, contracts, authorization, validation, state machines, storage, and logging in the same review round
+- Need to output a review report grouped by severity, with sufficient rationale and clear actionable fix suggestions
+- Need to attempt automatic fixes after identifying high-risk vulnerabilities, and provide fix results and residual risks
 
-目标结果:
-- 以规则驱动提升审查稳定性，降低“漏审”和“主观波动”
-- 输出对研发可直接执行的修复清单，而非泛泛描述
-- 在时间受限场景下提升审查效率并保持高危问题优先
+Expected outcomes:
+- Improve review stability through rule-driven review and reduce “missed review” and “subjective fluctuation”
+- Output a fix checklist that developers can directly execute, rather than generic descriptions
+- Improve review efficiency in time-constrained scenarios while keeping high-risk issues prioritized
 
-## 输入
+## Input
 
-必需输入:
-- 代码范围: 文件、目录、模块或变更集（如 PR diff）
-- 审查目标: 安全优先、契约优先、性能优先或综合审查
+Required input:
+- Code scope: files, directories, modules, or change sets, such as a PR diff
+- Review goal: security-first, contract-first, performance-first, or comprehensive review
 
-可选输入:
-- 规则集选择: 默认启用12条规则，可指定启用/禁用子规则
-- 是否允许自动修复: `true/false`
-- 自动修复边界: 仅低风险修复 / 包含中高风险可验证修复
-- 输出粒度: 简版（仅问题与建议）/ 标准版 / 严格版（含证据与复核步骤）
-- 扫描深度: `quick`、`medium`、`thorough`
+Optional input:
+- Rule set selection: enable 12 rules by default, with optional enable/disable of sub-rules
+- Whether automatic fixes are allowed: `true/false`
+- Automatic-fix boundary: low-risk fixes only / include medium- and high-risk verifiable fixes
+- Output granularity: brief version (issues and suggestions only) / standard version / strict version (including evidence and review steps)
+- Scan depth: `quick`, `medium`, `thorough`
 
-## 规则集合（默认12条）
+## Rule Set (Default 12 Rules)
 
-本 Skill 默认组合以下最新子 Skill 作为审查规则源（以工作区根目录 `skills/` 为准）:
+This Skill combines the following latest sub-Skills by default as review rule sources, based on the workspace root `skills/` directory:
 
-- 通用规则: `skills/asl-general-implement-rule-general/`
-- 命名规范和风格守卫: `skills/asl-general-implement-rule-naming-style/`
-- 认证与鉴权: `skills/asl-general-implement-rule-authz/`
-- 状态机一致性: `skills/asl-general-implement-rule-state-machine/`
-- 数据校验规则: `skills/asl-general-implement-rule-validation/`
-- API 契约一致性守卫: `skills/asl-general-implement-rule-api-contract-consistency/`
-- 服务层处理规范: `skills/asl-general-implement-rule-service-processing/`
-- 存储处理规范: `skills/asl-general-implement-rule-storage-processing/`
-- 异常与日志规范: `skills/asl-general-implement-rule-exception-logging/`
-- 敏感信息规范: `skills/asl-general-implement-rule-sensitive-data/`
-- 组件引用规范: `skills/asl-general-implement-rule-component-reference/`
-- 漏洞防范规范: `skills/asl-general-implement-rule-vulnerability-prevention/`
+- General rules: `skills/asl-general-implement-rule-general/`
+- Naming standards and style guard: `skills/asl-general-implement-rule-naming-style/`
+- Authentication and authorization: `skills/asl-general-implement-rule-authz/`
+- State machine consistency: `skills/asl-general-implement-rule-state-machine/`
+- Data validation rules: `skills/asl-general-implement-rule-validation/`
+- API contract consistency guard: `skills/asl-general-implement-rule-api-contract-consistency/`
+- Service-layer processing standards: `skills/asl-general-implement-rule-service-processing/`
+- Storage processing standards: `skills/asl-general-implement-rule-storage-processing/`
+- Exception and logging standards: `skills/asl-general-implement-rule-exception-logging/`
+- Sensitive information standards: `skills/asl-general-implement-rule-sensitive-data/`
+- Component reference standards: `skills/asl-general-implement-rule-component-reference/`
+- Vulnerability prevention standards: `skills/asl-general-implement-rule-vulnerability-prevention/`
 
-统一审查约束:
-- 以“可验证证据”为准，避免无依据推断。
-- 先报风险，再给修复；先高危，再中低危。
-- 每条问题必须包含: 位置、触发条件、影响、证据、建议。
-- 不为追求覆盖率制造低价值问题。
-- 可读性检查必须覆盖: 命名表达力、函数复杂度、职责单一性、注释有效性、重复代码与可维护性。
-- 潜在Bug识别必须覆盖: 空值/越界、状态遗漏、并发条件竞争、异常分支缺失、资源泄露、时序与边界条件错误。
-- （针对旧系统Enhancement）鉴权规则，将“严重性”调整为"Medium",并增加风险告知和审计补齐
+Unified review constraints:
+- Use “verifiable evidence” as the basis and avoid unsupported inferences.
+- Report risks before fixes; report high-risk issues before medium- and low-risk issues.
+- Every issue must include: location, triggering conditions, impact, evidence, and suggestion.
+- Do not fabricate low-value issues for the sake of coverage.
+- Readability checks must cover: naming expressiveness, function complexity, single responsibility, comment usefulness, duplicate code, and maintainability.
+- Potential bug identification must cover: null/out-of-bounds issues, missing states, concurrency race conditions, missing exception branches, resource leaks, and timing and boundary-condition errors.
+- For legacy system Enhancements, adjust the authorization rule “severity” to "Medium" and add risk notification and audit completion.
 
-## 质量与效率目标（SLO）
+## Quality and Efficiency Targets (SLO)
 
-- 高危漏洞识别率目标: 100%
-- Code Review 时间缩短目标: >50%（对比同范围人工逐文件审查基线）
-- 发现高危后自动修复成功率目标: >=90%
+- High-risk vulnerability identification target: 100%
+- Code Review time reduction target: >50%, compared with a manual file-by-file review baseline of the same scope
+- Automatic fix success rate target after discovering high-risk issues: >=90%
 
-说明:
-- 上述指标属于执行目标（Target SLO），需在实际运行中记录并复盘。
-- 若当前轮次无法达到目标，必须在输出中给出“未达标原因 + 补救建议 + 下一轮改进动作”。
+Notes:
+- These metrics are Target SLOs and must be recorded and reviewed during actual execution.
+- If the current round cannot meet targets, the output must include “reason for not meeting target + remediation suggestions + next-round improvement actions”.
 
-## 严重性定义与判定
+## Severity Definition and Determination
 
-- `Critical`: 可直接导致数据泄露、远程执行、批量越权、核心交易破坏
-- `High`: 可导致权限绕过、敏感信息泄露、状态机破坏、严重注入风险
-- `Medium`: 会引发业务异常、错误处理失真、可利用但前提较多
-- `Low`: 规范性/可维护性问题，对安全与正确性影响有限
-- `Info`: 优化建议或潜在改进点
+- `Critical`: can directly cause data leakage, remote execution, bulk privilege escalation, or core transaction destruction
+- `High`: can cause permission bypass, sensitive information leakage, state machine destruction, or severe injection risk
+- `Medium`: can cause business exceptions, distorted error handling, or exploitable issues with many prerequisites
+- `Low`: standards/maintainability issues with limited impact on security and correctness
+- `Info`: optimization suggestions or potential improvement points
 
-判定原则:
-- 优先按“影响面 × 可利用性 × 可恢复性”评估
-- 安全问题优先级高于风格问题
-- 同等级问题按修复成本与回归风险排序
+Determination principles:
+- Prefer assessment by “impact scope × exploitability × recoverability”
+- Security issues have higher priority than style issues
+- Issues of the same level are sorted by fix cost and regression risk
 
-## 自动修复策略
+## Automatic Fix Strategy
 
-当发现 `Critical/High` 问题时，执行以下策略:
+When `Critical/High` issues are found, execute the following strategy:
 
-1. 可自动修复场景（优先）
-- 明确且低歧义的修复，如参数化查询、鉴权漏判补齐、输入边界校验补齐、敏感日志脱敏、危险默认配置收敛。
+1. Automatically fixable scenarios (priority)
+- Clear and low-ambiguity fixes, such as parameterized queries, completing missing authorization checks, completing input boundary validation, masking sensitive logs, and constraining dangerous default configuration.
 
-2. 自动修复执行要求
-- 每次修复只处理一类风险，避免混合改动。
-- 修复后必须执行最小验证: 编译/静态检查/相关测试。
-- 输出修复前后行为差异与回归风险。
+2. Automatic fix execution requirements
+- Each fix handles only one type of risk to avoid mixed changes.
+- After fixing, minimum validation must be executed: compilation/static checks/related tests.
+- Output behavior differences before and after the fix, plus regression risks.
 
-3. 自动修复失败处理
-- 若无法自动修复或修复后验证失败，必须输出:
-  - 失败原因（如语义不明确、缺少测试护栏、跨模块影响过大）
-  - 人工修复建议（含优先级和步骤）
-  - 临时缓解措施（如访问收敛、配置开关、告警加固）
+3. Automatic fix failure handling
+- If automatic fixing is impossible or validation fails after fixing, the output must include:
+  - Failure reason, such as unclear semantics, missing test guardrails, or excessive cross-module impact
+  - Manual fix suggestions, including priority and steps
+  - Temporary mitigation measures, such as access restriction, configuration switches, and alert hardening
 
-## 工作流
+## Workflow
 
-1. 范围识别
-- 解析用户输入的代码范围与审查目标。
-- 建立待审查清单（文件、符号、接口、关键路径）。
+1. Scope identification
+- Parse the code scope and review goal from user input.
+- Build the review checklist, including files, symbols, APIs, and critical paths.
 
-2. 规则装载
-- 按默认12条规则装载审查维度。
-- 若用户指定规则子集，按输入覆盖默认配置。
+2. Rule loading
+- Load review dimensions according to the default 12 rules.
+- If the user specifies a rule subset, override the default configuration according to input.
 
-3. 风险扫描与证据收集
-- 逐条规则扫描，定位违规点。
-- 为每个问题绑定证据（代码片段、调用链、配置项、行为路径）。
-- 并行执行可读性扫描与潜在Bug扫描，输出可复现条件或触发前提。
+3. Risk scanning and evidence collection
+- Scan each rule and locate violations.
+- Bind evidence to every issue, such as code snippets, call chains, configuration items, and behavior paths.
+- Run readability scanning and potential bug scanning in parallel, and output reproducible conditions or triggering prerequisites.
 
-4. 严重性分级与去重
-- 对问题进行分级（Critical/High/Medium/Low/Info）。
-- 合并重复问题，保留最有代表性的证据与修复路径。
+4. Severity classification and deduplication
+- Classify issues as Critical/High/Medium/Low/Info.
+- Merge duplicate issues and retain the most representative evidence and fix path.
 
-5. 自动修复与验证（可选）
-- 对可自动修复项执行最小变更。
-- 运行编译与相关测试，记录成功率与失败原因。
+5. Automatic fix and validation (optional)
+- Execute minimal changes for automatically fixable items.
+- Run compilation and related tests, and record success rate and failure reasons.
 
-6. 报告生成
-- 先输出风险清单，再输出建议和修复计划。
-- 明确目标达成度（识别率、耗时改善、自动修复成功率）。
+6. Report generation
+- Output the risk list first, then suggestions and the fix plan.
+- Clearly state target achievement, including identification rate, time improvement, and automatic fix success rate.
 
-## 参考用例
+## Reference Cases
 
-### 用例1：指定Controller范围审查
-目标: 审查某个 Controller 及其直接调用链的安全与契约一致性。
+### Case 1: Review a specified Controller scope
+Goal: review the security and contract consistency of a Controller and its direct call chain.
 
-建议覆盖:
-- 鉴权缺失、资源级权限缺失
-- 输入绑定与校验遗漏
-- 返回状态码/错误码与契约不一致
-- 异常处理和日志是否泄露内部细节
+Recommended coverage:
+- Missing authorization and missing resource-level permissions
+- Input binding and validation omissions
+- Return status codes/error codes inconsistent with contract
+- Whether exception handling and logs leak internal details
 
-### 用例2：指定Service范围审查
-目标: 审查业务编排、状态流转与幂等一致性。
+### Case 2: Review a specified Service scope
+Goal: review business orchestration, state transitions, and idempotent consistency.
 
-建议覆盖:
-- 非法状态迁移
-- 重复提交/并发写入
-- 事务边界不完整
-- 外部依赖失败后的补偿或回滚缺失
+Recommended coverage:
+- Illegal state transitions
+- Duplicate submissions/concurrent writes
+- Incomplete transaction boundaries
+- Missing compensation or rollback after external dependency failures
 
-### 用例3：指定Repository/数据访问范围审查
-目标: 审查存储访问安全与查询性能边界。
+### Case 3: Review a specified Repository/data access scope
+Goal: review storage access security and query performance boundaries.
 
-建议覆盖:
-- SQL注入/拼接风险
-- 分页上限缺失导致资源耗尽
-- N+1 查询与过度抓取
-- 敏感字段过度返回
+Recommended coverage:
+- SQL injection/concatenation risks
+- Missing pagination cap causing resource exhaustion
+- N+1 queries and over-fetching
+- Excessive return of sensitive fields
 
-## 输出清单（必须）
+## Output Checklist (Required)
 
-1. 审查范围
-- 输入范围、实际覆盖范围、排除项
+1. Review scope
+- Input scope, actual coverage, exclusions
 
-2. 问题清单（按严重性降序）
-- 每条包含: 级别、位置、问题描述、触发条件、影响面、证据、修复建议、修复优先级、问题类型（安全/契约/可读性/潜在Bug）
+2. Issue list (descending severity)
+- Each item includes: level, location, issue description, triggering conditions, impact scope, evidence, fix suggestion, fix priority, issue type (security/contract/readability/potential bug)
 
-3. 自动修复结果
-- 自动修复项、验证结果、成功率
-- 未自动修复项及原因
+3. Automatic fix results
+- Automatically fixed items, validation results, success rate
+- Items not automatically fixed and reasons
 
-4. 目标达成度
-- 高危漏洞识别率
-- 审查耗时缩短比例
-- 自动修复成功率
-- 未达标项与改进建议
+4. Target achievement
+- High-risk vulnerability identification rate
+- Review time reduction ratio
+- Automatic fix success rate
+- Unmet targets and improvement suggestions
 
-5. 回归与发布建议
-- 需要补充的测试
-- 建议的灰度/回滚策略
+5. Regression and release recommendations
+- Tests that need to be added
+- Recommended canary/rollback strategy
 
-## 审查结果呈现规范（给用户）
+## Review Result Presentation Standards (For Users)
 
-结果必须“清晰明确、理由充分、按严重性给建议”，格式如下:
+Results must be “clear, well-reasoned, and recommendation-oriented by severity”, in the following format:
 
-1. `Critical` 与 `High`（先列）
-- 用一句话概述业务/安全影响
-- 给出证据位置与触发路径
-- 给出可执行修复方案与优先级（P0/P1）
+1. `Critical` and `High` (list first)
+- Summarize business/security impact in one sentence
+- Provide evidence location and triggering path
+- Provide executable fix plan and priority (P0/P1)
 
-2. `Medium` 与 `Low`
-- 说明为何不是高危
-- 给出改进建议与实施顺序（P2/P3）
-- 可读性问题需给出重构建议（命名、拆分函数、提取公共逻辑）与预期收益。
+2. `Medium` and `Low`
+- Explain why it is not high-risk
+- Provide improvement suggestions and implementation order (P2/P3)
+- For readability issues, provide refactoring suggestions, such as naming, splitting functions, extracting shared logic, and expected benefits.
 
 3. `Info`
-- 仅保留高价值优化项，避免噪音
+- Keep only high-value optimization items to avoid noise
 
-4. 结论摘要
-- 是否建议阻断合并
-- 必修项与可延期项
-- 下一步动作与责任建议
+4. Conclusion summary
+- Whether to recommend blocking merge
+- Required fixes and deferrable items
+- Next actions and responsibility suggestions
 
-## 验证清单
+## Validation Checklist
 
-提交前逐项核对:
+Check each item before submission:
 
-- [ ] 已按用户指定范围完成审查，且范围映射清晰。
-- [ ] 12条规则已装载（或已明确说明启用子集）。
-- [ ] 问题均有证据与影响说明，未出现空泛结论。
-- [ ] 问题已按严重性排序并给出优先级建议。
-- [ ] 已完成可读性检查并输出可执行改进建议。
-- [ ] 已识别潜在Bug并给出触发条件与验证建议。
-- [ ] 高危问题已尝试自动修复，并给出验证结果。
-- [ ] 若自动修复失败，已给出人工修复建议与临时缓解方案。
-- [ ] 报告包含目标达成度与未达标改进建议。
-- [ ] 输出结构清晰，可直接用于评审会或整改跟踪。
+- [ ] Review has been completed according to the user-specified scope, and scope mapping is clear.
+- [ ] The 12 rules are loaded, or the enabled subset is explicitly stated.
+- [ ] All issues have evidence and impact explanation, with no vague conclusions.
+- [ ] Issues are sorted by severity and include priority recommendations.
+- [ ] Readability check has been completed and executable improvement suggestions are output.
+- [ ] Potential bugs have been identified with triggering conditions and validation suggestions.
+- [ ] High-risk issues have been attempted for automatic fixes, with validation results provided.
+- [ ] If automatic fixing failed, manual fix suggestions and temporary mitigation plans are provided.
+- [ ] The report includes target achievement and improvement suggestions for unmet targets.
+- [ ] The output structure is clear and can be used directly for review meetings or remediation tracking.

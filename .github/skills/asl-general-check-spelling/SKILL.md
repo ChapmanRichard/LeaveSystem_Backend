@@ -138,11 +138,11 @@ Recommended issue fields:
 - /check-spelling Run a quick check on recently changed files and generate terminology whitelist suggestions
 - /check-spelling Check variable naming grammar logic under Api.BLL/, identify isDelete-style names, and provide replacement suggestions
 
-## 验收清单
+## Acceptance Checklist
 
-- [ ] 已明确检查范围、模式和词典来源
-- [ ] 已排除二进制与生成目录
-- [ ] 已输出可定位问题清单（文件 + 行号）
-- [ ] 已覆盖标点、术语、变量命名语法三类检查
-- [ ] 已区分自动修复项与人工确认项
-- [ ] 已给出白名单建议与后续维护策略
+- [ ] Check scope, mode, and dictionary sources are clearly defined
+- [ ] Binary and generated directories are excluded
+- [ ] A locatable issue list has been output, including file + line number
+- [ ] Punctuation, terminology, and variable naming grammar checks are covered
+- [ ] Auto-fix items and manual confirmation items are distinguished
+- [ ] Whitelist suggestions and follow-up maintenance strategies are provided
